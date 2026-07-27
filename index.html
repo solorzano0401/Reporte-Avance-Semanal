@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reporte de Avance Semanal - Dashboard Analytics</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+
+  <!-- SheetJS for Excel Upload & Parsing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Custom Glassmorphism & Soft Shadows */
+    .glass-card {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .glass-card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    .dark ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(156, 163, 175, 0.5);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(107, 114, 128, 0.8);
+    }
+
+    /* Gradient Glowing Accents */
+    .glow-primary {
+      box-shadow: 0 0 20px -5px rgba(59, 130, 246, 0.3);
+    }
+    .glow-success {
+      box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.3);
+    }
+    .glow-warning {
+      box-shadow: 0 0 20px -5px rgba(245, 158, 11, 0.3);
+    }
+
+    /* Drag and Drop Hover */
+    .drag-over {
+      border-color: #3b82f6 !important;
+      background-color: rgba(59, 130, 246, 0.08) !important;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen antialiased selection:bg-blue-500 selection:text-white">
+
+  <!-- Main Container -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- Header Section -->
+    <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-5 rounded-2xl shadow-sm glass-card">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
+          <i class="fa-solid fa-chart-line text-xl"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-3">
+            <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Reporte de Avance Semanal</h1>
+          </div>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5 flex items-center gap-2">
+            <i class="fa-regular fa-calendar text-xs"></i>
+            <span id="headerWeekText">Semana del 20-24 de julio, 2026</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-3 self-end md:self-auto flex-wrap">
+        <!-- Dark Mode Toggle -->
+        <button id="themeToggleBtn" title="Cambiar Tema" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+          <i id="themeIcon" class="fa-solid fa-moon text-sm"></i>
+        </button>
+
+        <!-- Menú Consolidado: Actualizar Reporte / Opciones -->
+        <button id="openFeedModalBtn" class="flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white transition-all shadow-md shadow-blue-500/20 active:scale-95">
+          <i class="fa-solid fa-sliders text-xs"></i>
+          <span>Opciones de Reporte</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Filter Bar -->
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3.5 rounded-xl shadow-sm">
+      
+      <!-- Team Pills Filter (Rendered Dynamically) -->
+      <div id="filterButtonsContainer" class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Quick Search & Period Selector -->
+      <div class="flex items-center gap-3">
+        <div class="relative flex-1 sm:flex-none">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400"></i>
+          <input id="searchInput" type="text" placeholder="Buscar integrante..." class="w-full sm:w-48 pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/40">
+        </div>
+
+        <!-- Period Selector Dropdown (Multi-week support) -->
+        <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-lg px-2.5 py-1.5 shadow-sm">
+          <i class="fa-regular fa-calendar-check text-blue-500 text-xs"></i>
+          <select id="weekSelector" onchange="changeWeek(this.value)" class="bg-transparent text-xs font-semibold text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer">
+            <!-- Options populated dynamically by JS -->
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPI Cards Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      
+      <!-- Total Backlog Card -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-5 rounded-2xl shadow-sm glass-card relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 opacity-5 dark:opacity-10 group-hover:scale-110 transition-transform text-slate-900 dark:text-white">
+          <i class="fa-solid fa-layer-group text-8xl"></i>
+        </div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Backlog</span>
+          <span class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+            <i class="fa-solid fa-list-check text-sm"></i>
+          </span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white" id="kpi-total">3,376</span>
+          <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">elementos</span>
+        </div>
+        <div class="mt-3 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+          <i class="fa-solid fa-database text-blue-500"></i>
+          <span>Capacidad total asignada</span>
+        </div>
+      </div>
+
+      <!-- Completados Card -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-5 rounded-2xl shadow-sm glass-card glow-success relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 opacity-5 dark:opacity-10 group-hover:scale-110 transition-transform text-emerald-500">
+          <i class="fa-solid fa-circle-check text-8xl"></i>
+        </div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Completados</span>
+          <span class="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+            <i class="fa-solid fa-check text-sm"></i>
+          </span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl font-extrabold tracking-tight text-emerald-600 dark:text-emerald-400" id="kpi-completed">926</span>
+          <span id="kpi-completed-pct" class="inline-flex items-center text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-1.5 py-0.5 rounded">
+            <i class="fa-solid fa-arrow-trend-up mr-1 text-[10px]"></i>27.4%
+          </span>
+        </div>
+        <div class="mt-3 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+          <i class="fa-solid fa-bolt text-amber-500"></i>
+          <span>Procesados exitosamente</span>
+        </div>
+      </div>
+
+      <!-- Pendientes Card -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-5 rounded-2xl shadow-sm glass-card glow-warning relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 opacity-5 dark:opacity-10 group-hover:scale-110 transition-transform text-amber-500">
+          <i class="fa-solid fa-clock text-8xl"></i>
+        </div>
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Pendientes</span>
+          <span class="p-2 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+            <i class="fa-solid fa-hourglass-half text-sm"></i>
+          </span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl font-extrabold tracking-tight text-amber-600 dark:text-amber-400" id="kpi-pending">2,450</span>
+          <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">en cola</span>
+        </div>
+        <div class="mt-3 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+          <i class="fa-solid fa-circle-notch text-amber-500 animate-spin"></i>
+          <span>En proceso de atención</span>
+        </div>
+      </div>
+
+      <!-- Progreso Card -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-5 rounded-2xl shadow-sm glass-card glow-primary relative overflow-hidden group">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Tasa de Progreso</span>
+          <span class="p-2 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+            <i class="fa-solid fa-chart-pie text-sm"></i>
+          </span>
+        </div>
+        <div class="flex items-baseline justify-between">
+          <span class="text-3xl font-extrabold tracking-tight text-blue-600 dark:text-blue-400" id="kpi-progress">27.4%</span>
+          <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Meta: 100%</span>
+        </div>
+        <!-- Progress bar -->
+        <div class="mt-3">
+          <div class="h-2.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-200/50 dark:border-slate-800">
+            <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-700 ease-out" style="width: 27.4%;"></div>
+          </div>
+          <div class="flex justify-between text-[11px] text-slate-400 mt-1">
+            <span>0%</span>
+            <span>50%</span>
+            <span>100%</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main Charts Section Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- Team Progress Distribution (6 cols) -->
+      <div class="lg:col-span-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-5 rounded-2xl shadow-sm glass-card flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fa-solid fa-chart-bar text-emerald-500"></i>
+              Avance por Equipo
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Comparativa de completados vs pendientes</p>
+          </div>
+        </div>
+        <div class="relative h-64 w-full">
+          <canvas id="teamChart" role="img" aria-label="Gráfico de avance por integrante"></canvas>
+        </div>
+      </div>
+
+      <!-- Donut Chart / Gráfica de Anillo (6 cols) -->
+      <div class="lg:col-span-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-5 rounded-2xl shadow-sm glass-card flex flex-col justify-between">
+        <div class="flex items-center justify-between mb-2">
+          <div>
+            <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <i class="fa-solid fa-chart-pie text-indigo-500"></i>
+              Distribución de Completados
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Aportación relativa de elementos completados por integrante</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
+            Proporción Semanal
+          </span>
+        </div>
+        <div class="relative h-64 w-full flex items-center justify-center">
+          <canvas id="doughnutChart" role="img" aria-label="Gráfica de anillo de distribución por integrante"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Daily Progress Section (Full Width Grid) -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-5 rounded-2xl shadow-sm glass-card">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+        <div>
+          <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-calendar-days text-indigo-500"></i>
+            Avance Diario por Gestor (Semana Actual)
+          </h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Productividad diaria registrada de lunes a viernes</p>
+        </div>
+        <div id="dailyChartLegend" class="flex flex-wrap items-center gap-3 text-xs">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+      <div class="relative h-72 w-full">
+        <canvas id="dailyChart" role="img" aria-label="Gráfico de avance diario por gestor"></canvas>
+      </div>
+    </div>
+
+    <!-- Team Table Section -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-sm glass-card overflow-hidden">
+      <div class="p-5 border-b border-slate-200 dark:border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-users text-indigo-500"></i>
+            Detalle por Integrante
+          </h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Métricas desagregadas por analista asignado</p>
+        </div>
+        
+        <div id="activeMembersBadge" class="flex items-center gap-2 text-xs text-slate-500 font-medium">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span> 3 Miembros Activos
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs sm:text-sm border-collapse">
+          <thead>
+            <tr class="bg-slate-50/80 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider text-[11px]">
+              <th class="py-3.5 px-4 sm:px-6">Integrante</th>
+              <th class="py-3.5 px-4 text-center">Asignados</th>
+              <th class="py-3.5 px-4 text-center">Completados</th>
+              <th class="py-3.5 px-4 text-center">Faltantes</th>
+              <th class="py-3.5 px-4 text-center min-w-[180px]">Progreso</th>
+              <th class="py-3.5 px-4 text-right pr-6">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="teamTableBody" class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-200 font-medium">
+            <!-- Dynamic Rows rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="pt-4 pb-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 dark:text-slate-500 border-t border-slate-200 dark:border-slate-800/60 gap-2">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-rotate text-blue-500"></i>
+        <span>Última actualización sincronizada: <strong id="lastUpdate" class="text-slate-600 dark:text-slate-300">26/07/2026 05:00 PM</strong></span>
+      </div>
+      <div>
+        <span>Reporte Avance Semanal</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Consolidated "Opciones de Reporte" Modal -->
+  <div id="feedModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200 p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-200" id="feedModalContainer">
+      <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold flex items-center justify-center border border-blue-500/20">
+            <i class="fa-solid fa-sliders text-lg"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Opciones de Reporte</h3>
+            <p class="text-xs text-slate-400">Actualiza, sincroniza o gestiona los datos</p>
+          </div>
+        </div>
+        <button onclick="closeFeedModal()" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg transition-colors">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-6">
+        <!-- Local Upload Zone -->
+        <div>
+          <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-file-excel text-emerald-500"></i> Cargar Archivo Local
+          </h4>
+          <div id="dropZone" class="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-500 rounded-2xl p-6 flex flex-col items-center justify-center text-center bg-slate-50/50 dark:bg-slate-800/30 transition-all cursor-pointer">
+            <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" class="hidden">
+            <div class="w-12 h-12 rounded-full bg-blue-50 dark:bg-slate-800 text-blue-500 flex items-center justify-center mb-3 text-xl">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+            </div>
+            <p class="text-sm font-bold text-slate-800 dark:text-slate-200">Arrastra tu archivo Excel aquí</p>
+            <p class="text-xs text-slate-400 mt-1">Soporta <span class="font-mono text-emerald-500">.xlsx</span>, <span class="font-mono text-emerald-500">.xls</span>, <span class="font-mono text-emerald-500">.csv</span>.</p>
+            <button type="button" onclick="document.getElementById('excelFileInput').click()" class="mt-4 px-4 py-2 text-xs font-semibold rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition-all shadow-md shadow-blue-500/20">
+              Examinar archivo
+            </button>
+          </div>
+        </div>
+
+        <!-- Extra Actions Grid -->
+        <div>
+          <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-bolt text-amber-500"></i> Acciones Adicionales
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            
+            <!-- Sincronizar Nube -->
+            <button onclick="syncCloudDataAsNewWeek()" class="flex flex-col items-center justify-center p-3 gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-all shadow-sm group">
+              <i class="fa-solid fa-cloud-arrow-down text-blue-500 text-xl group-hover:scale-110 transition-transform"></i>
+              <span class="text-xs font-semibold text-center leading-tight">Sincronizar<br>Nube</span>
+            </button>
+            
+            <!-- Exportar Data -->
+            <button id="exportCsvBtnModal" class="flex flex-col items-center justify-center p-3 gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-all shadow-sm group">
+              <i class="fa-solid fa-file-csv text-emerald-500 text-xl group-hover:scale-110 transition-transform"></i>
+              <span class="text-xs font-semibold text-center leading-tight">Exportar<br>Data</span>
+            </button>
+
+            <!-- Limpiar Data -->
+            <button id="resetDataBtnModal" class="flex flex-col items-center justify-center p-3 gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-slate-700 hover:border-rose-200 dark:hover:border-rose-900 text-slate-700 dark:text-slate-200 transition-all shadow-sm group">
+              <i class="fa-solid fa-rotate-left text-rose-500 text-xl group-hover:scale-110 transition-transform"></i>
+              <span class="text-xs font-semibold text-center leading-tight">Limpiar<br>Data</span>
+            </button>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800 flex justify-end">
+        <button onclick="closeFeedModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-xs font-semibold rounded-xl transition-colors">
+          Cerrar Menú
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div id="detailModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200 p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-200" id="modalContainer">
+      <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div id="modalAvatar" class="w-10 h-10 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold flex items-center justify-center border border-blue-500/20">
+            --
+          </div>
+          <div>
+            <h3 id="modalName" class="text-lg font-bold text-slate-900 dark:text-white">Nombre</h3>
+            <p class="text-xs text-slate-400">Rendimiento y Desglose Individual</p>
+          </div>
+        </div>
+        <button onclick="closeDetailModal()" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <!-- Key Stats Grid -->
+        <div class="grid grid-cols-3 gap-3 text-center">
+          <div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800">
+            <p class="text-[11px] text-slate-400 uppercase font-semibold">Asignados</p>
+            <p id="modalAssigned" class="text-lg font-bold text-slate-900 dark:text-white">0</p>
+          </div>
+          <div class="p-3 bg-emerald-50 dark:bg-emerald-950/30 rounded-xl border border-emerald-500/20">
+            <p class="text-[11px] text-emerald-600 dark:text-emerald-400 uppercase font-semibold">Completados</p>
+            <p id="modalCompleted" class="text-lg font-bold text-emerald-600 dark:text-emerald-400">0</p>
+          </div>
+          <div class="p-3 bg-amber-50 dark:bg-amber-950/30 rounded-xl border border-amber-500/20">
+            <p class="text-[11px] text-amber-600 dark:text-amber-400 uppercase font-semibold">Pendientes</p>
+            <p id="modalPending" class="text-lg font-bold text-amber-600 dark:text-amber-400">0</p>
+          </div>
+        </div>
+
+        <!-- Mini Modal Chart -->
+        <div>
+          <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">Avance Diario (Lun - Vie)</p>
+          <div class="h-44 w-full relative">
+            <canvas id="modalChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800 flex justify-end">
+        <button onclick="closeDetailModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-xs font-semibold rounded-xl transition-colors">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Reset Confirmation Modal -->
+  <div id="resetModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200 p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-200" id="resetModalContainer">
+      <div class="p-6 text-center space-y-4">
+        <div class="w-14 h-14 rounded-2xl bg-rose-500/10 text-rose-500 font-bold flex items-center justify-center mx-auto border border-rose-500/20">
+          <i class="fa-solid fa-arrow-rotate-left text-2xl"></i>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white">¿Restablecer datos al inicio?</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Esta acción eliminará las semanas adicionales importadas y volverá a la configuración inicial por defecto (Semana 1).</p>
+        </div>
+        <div class="flex items-center justify-center gap-3 pt-2">
+          <button onclick="closeResetModal()" class="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl transition-colors w-full">
+            Cancelar
+          </button>
+          <button onclick="confirmResetData()" class="px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded-xl transition-all shadow-md shadow-rose-500/20 w-full">
+            Sí, Limpiar Data
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Logic -->
+  <script>
+    // Color palette assigned dynamically to team members in charts
+    const MEMBER_COLORS = [
+      '#3b82f6', // Blue
+      '#10b981', // Emerald
+      '#f59e0b', // Amber
+      '#8b5cf6', // Purple
+      '#ec4899', // Pink
+      '#06b6d4', // Cyan
+      '#f97316', // Orange
+      '#6366f1'  // Indigo
+    ];
+
+    // Multi-Week Global State
+    const INITIAL_STATE = {
+      currentWeekId: 'w1',
+      currentFilter: 'all',
+      weeks: [
+        {
+          id: 'w1',
+          name: 'Semana 1 (20-24 Jul)',
+          dateStr: 'Semana del 20-24 de julio, 2026',
+          team: [
+            { name: 'Steven', assigned: 1155, completed: 451, pending: 704, daily: [80, 93, 68, 75, 79] },
+            { name: 'Dayana', assigned: 1155, completed: 256, pending: 899, daily: [55, 55, 55, 54, 37] },
+            { name: 'Sofia', assigned: 1066, completed: 220, pending: 846, daily: [55, 55, 39, 55, 15] }
+          ]
+        }
+      ]
+    };
+
+    // Global state initialized from template
+    let state = JSON.parse(JSON.stringify(INITIAL_STATE));
+
+    // --- Persistencia con LocalStorage ---
+    function guardarDatosEnNavegador() {
+      localStorage.setItem('dashboard_state_mac', JSON.stringify(state));
+    }
+
+    function cargarDatosDelNavegador() {
+      const datosGuardados = localStorage.getItem('dashboard_state_mac');
+      if (datosGuardados) {
+        try {
+          const parsedState = JSON.parse(datosGuardados);
+          if (parsedState && parsedState.weeks) {
+            state = parsedState; // Restaura el estado completo con todas las semanas
+          }
+        } catch (e) {
+          console.error("Error al cargar datos de localStorage:", e);
+        }
+      }
+    }
+
+    // Reset Data Logic & Modal Controls
+    const resetModal = document.getElementById('resetModal');
+    const resetModalContainer = document.getElementById('resetModalContainer');
+
+    document.getElementById('resetDataBtnModal').addEventListener('click', () => {
+      closeFeedModal(); // Cerramos primero el menú de opciones
+      resetModal.classList.remove('hidden');
+      setTimeout(() => {
+        resetModal.classList.remove('opacity-0');
+        resetModalContainer.classList.remove('scale-95');
+      }, 10);
+    });
+
+    function closeResetModal() {
+      resetModal.classList.add('opacity-0');
+      resetModalContainer.classList.add('scale-95');
+      setTimeout(() => {
+        resetModal.classList.add('hidden');
+      }, 200);
+    }
+
+    function confirmResetData() {
+      state = JSON.parse(JSON.stringify(INITIAL_STATE));
+      guardarDatosEnNavegador(); // Guardar el reseteo en localStorage
+      document.getElementById('searchInput').value = '';
+      document.getElementById('lastUpdate').textContent = '26/07/2026 05:00 PM';
+      closeResetModal();
+      renderAll();
+      showToast('Se ha restablecido el dashboard a los datos iniciales.', 'info');
+    }
+
+    // Helper to get active week or aggregated multi-week data
+    function getActiveWeek() {
+      if (state.currentWeekId === 'all_weeks') {
+        return state.weeks[state.weeks.length - 1];
+      }
+      return state.weeks.find(w => w.id === state.currentWeekId) || state.weeks[0];
+    }
+
+    // Chart instances
+    let teamChartInstance = null;
+    let dailyChartInstance = null;
+    let modalChartInstance = null;
+    let doughnutChartInstance = null;
+
+    // Theme Switcher Logic
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeIcon = document.getElementById('themeIcon');
+
+    function isDark() {
+      return document.documentElement.classList.contains('dark');
+    }
+
+    function toggleTheme() {
+      if (isDark()) {
+        document.documentElement.classList.remove('dark');
+        themeIcon.className = 'fa-solid fa-sun text-amber-500 text-sm';
+      } else {
+        document.documentElement.classList.add('dark');
+        themeIcon.className = 'fa-solid fa-moon text-slate-300 text-sm';
+      }
+      updateChartColors();
+    }
+
+    themeToggleBtn.addEventListener('click', toggleTheme);
+
+    // Toast Notification Utility
+    function showToast(message, type = 'success') {
+      const toastContainer = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      
+      const icon = type === 'success' 
+        ? '<i class="fa-solid fa-circle-check text-emerald-500 text-base"></i>' 
+        : type === 'error'
+        ? '<i class="fa-solid fa-circle-exclamation text-rose-500 text-base"></i>'
+        : '<i class="fa-solid fa-circle-info text-blue-500 text-base"></i>';
+
+      toast.className = 'pointer-events-auto flex items-center gap-2.5 px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl text-xs font-semibold text-slate-800 dark:text-slate-100 transform translate-y-4 opacity-0 transition-all duration-300';
+      toast.innerHTML = `${icon} <span>${message}</span>`;
+      
+      toastContainer.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    function renderWeekSelector() {
+      const selector = document.getElementById('weekSelector');
+      if (!selector) return;
+
+      let html = state.weeks.map(w => `
+        <option value="${w.id}" ${w.id === state.currentWeekId ? 'selected' : ''}>
+          📅 ${w.name}
+        </option>
+      `).join('');
+
+      if (state.weeks.length > 1) {
+        html += `<option value="all_weeks" ${state.currentWeekId === 'all_weeks' ? 'selected' : ''}>📌 Semana Actual (Último Registro)</option>`;
+      }
+
+      selector.innerHTML = html;
+
+      const activeW = getActiveWeek();
+      const headerWeekText = document.getElementById('headerWeekText');
+      if (headerWeekText) headerWeekText.textContent = activeW.dateStr;
+    }
+
+    function changeWeek(weekId) {
+      state.currentWeekId = weekId;
+      guardarDatosEnNavegador(); // Guardar selección de semana activa
+      renderAll();
+      showToast(`Mostrando datos de: ${getActiveWeek().name}`, 'info');
+    }
+
+    function recalculateKPIs() {
+      const activeTeam = getActiveWeek().team;
+      const total = activeTeam.reduce((acc, m) => acc + (m.assigned || 0), 0);
+      const completed = activeTeam.reduce((acc, m) => acc + (m.completed || 0), 0);
+      const pending = total - completed;
+
+      const pct = total > 0 ? ((completed / total) * 100).toFixed(1) : '0.0';
+
+      document.getElementById('kpi-total').textContent = total.toLocaleString();
+      document.getElementById('kpi-completed').textContent = completed.toLocaleString();
+      document.getElementById('kpi-pending').textContent = pending.toLocaleString();
+      document.getElementById('kpi-progress').textContent = `${pct}%`;
+      document.getElementById('kpi-completed-pct').innerHTML = `<i class="fa-solid fa-arrow-trend-up mr-1 text-[10px]"></i>${pct}%`;
+      document.getElementById('progress-bar').style.width = `${pct}%`;
+
+      document.getElementById('activeMembersBadge').innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span> ${activeTeam.length} Miembros Activos`;
+    }
+
+    function getChartThemeColors() {
+      const dark = isDark();
+      return {
+        text: dark ? '#94a3b8' : '#64748b',
+        grid: dark ? 'rgba(51, 65, 85, 0.3)' : 'rgba(226, 232, 240, 0.7)'
+      };
+    }
+
+    function updateChartColors() {
+      renderAll();
+    }
+
+    function initDoughnutChart() {
+      const ctx = document.getElementById('doughnutChart').getContext('2d');
+      if (doughnutChartInstance) doughnutChartInstance.destroy();
+
+      const colors = getChartThemeColors();
+      const activeTeam = getActiveWeek().team;
+      const bgColors = activeTeam.map((_, i) => MEMBER_COLORS[i % MEMBER_COLORS.length]);
+
+      const totalCompleted = activeTeam.reduce((acc, m) => acc + m.completed, 0);
+
+      doughnutChartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: activeTeam.map(m => m.name),
+          datasets: [{
+            data: activeTeam.map(m => m.completed),
+            backgroundColor: bgColors,
+            borderWidth: 3,
+            borderColor: isDark() ? '#0f172a' : '#ffffff',
+            hoverOffset: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '68%',
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                color: colors.text,
+                font: { family: 'Plus Jakarta Sans', size: 12, weight: '600' },
+                padding: 14,
+                usePointStyle: true,
+                pointStyle: 'circle'
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const val = context.raw || 0;
+                  const pct = totalCompleted > 0 ? ((val / totalCompleted) * 100).toFixed(1) : 0;
+                  return ` ${context.label}: ${val.toLocaleString()} (${pct}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function initTeamChart() {
+      const ctx = document.getElementById('teamChart').getContext('2d');
+      if (teamChartInstance) teamChartInstance.destroy();
+
+      const colors = getChartThemeColors();
+      const activeTeam = getActiveWeek().team;
+
+      const filteredTeam = state.currentFilter === 'all' 
+        ? activeTeam 
+        : activeTeam.filter(m => m.name.toLowerCase() === state.currentFilter.toLowerCase());
+
+      teamChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: filteredTeam.map(m => m.name),
+          datasets: [
+            {
+              label: 'Completados',
+              data: filteredTeam.map(m => m.completed),
+              backgroundColor: '#10b981',
+              borderRadius: 6
+            },
+            {
+              label: 'Pendientes',
+              data: filteredTeam.map(m => m.pending),
+              backgroundColor: '#f59e0b',
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: { color: colors.text, font: { family: 'Plus Jakarta Sans', size: 11, weight: '600' }, boxWidth: 12 }
+            }
+          },
+          scales: {
+            x: {
+              stacked: true,
+              grid: { color: colors.grid },
+              ticks: { color: colors.text, font: { family: 'Plus Jakarta Sans', size: 11 } }
+            },
+            y: {
+              stacked: true,
+              grid: { display: false },
+              ticks: { color: colors.text, font: { family: 'Plus Jakarta Sans', size: 11, weight: '600' } }
+            }
+          }
+        }
+      });
+    }
+
+    function initDailyChart() {
+      const ctx = document.getElementById('dailyChart').getContext('2d');
+      if (dailyChartInstance) dailyChartInstance.destroy();
+
+      const colors = getChartThemeColors();
+      const activeTeam = getActiveWeek().team;
+
+      const filteredTeam = state.currentFilter === 'all' 
+        ? activeTeam 
+        : activeTeam.filter(m => m.name.toLowerCase() === state.currentFilter.toLowerCase());
+
+      const datasets = filteredTeam.map((m, idx) => ({
+        label: m.name,
+        data: m.daily || [0, 0, 0, 0, 0],
+        backgroundColor: MEMBER_COLORS[idx % MEMBER_COLORS.length],
+        borderRadius: 6
+      }));
+
+      const legendContainer = document.getElementById('dailyChartLegend');
+      if (legendContainer) {
+        legendContainer.innerHTML = filteredTeam.map((m, idx) => `
+          <span class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded" style="background-color: ${MEMBER_COLORS[idx % MEMBER_COLORS.length]}"></span>
+            ${m.name}
+          </span>
+        `).join('');
+      }
+
+      dailyChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
+          datasets: datasets
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: colors.grid },
+              ticks: { color: colors.text, font: { family: 'Plus Jakarta Sans', size: 11 } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: colors.text, font: { family: 'Plus Jakarta Sans', size: 11, weight: '600' } }
+            }
+          }
+        }
+      });
+    }
+
+    function renderFilterButtons() {
+      const container = document.getElementById('filterButtonsContainer');
+      if (!container) return;
+
+      const activeTeam = getActiveWeek().team;
+
+      let html = `
+        <span class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mr-2 hidden sm:inline">Filtrar:</span>
+        <button data-filter="all" onclick="setFilter('all')" class="team-filter-btn px-3 py-1.5 text-xs font-medium rounded-lg ${state.currentFilter === 'all' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'} transition-all">
+          Todos los miembros
+        </button>
+      `;
+
+      activeTeam.forEach(m => {
+        const active = state.currentFilter.toLowerCase() === m.name.toLowerCase();
+        html += `
+          <button data-filter="${m.name}" onclick="setFilter('${m.name}')" class="team-filter-btn px-3 py-1.5 text-xs font-medium rounded-lg ${active ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'} transition-all">
+            ${m.name}
+          </button>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function setFilter(filterVal) {
+      state.currentFilter = filterVal;
+      renderFilterButtons();
+      renderTable();
+      initTeamChart();
+      initDailyChart();
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('teamTableBody');
+      if (!tbody) return;
+
+      const searchTerm = (document.getElementById('searchInput').value || '').toLowerCase();
+      const activeTeam = getActiveWeek().team;
+
+      const filteredTeam = activeTeam.filter(m => {
+        const matchesFilter = state.currentFilter === 'all' || m.name.toLowerCase() === state.currentFilter.toLowerCase();
+        const matchesSearch = m.name.toLowerCase().includes(searchTerm);
+        return matchesFilter && matchesSearch;
+      });
+
+      if (filteredTeam.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="py-8 text-center text-slate-400 text-xs">
+              No se encontraron integrantes que coincidan con la búsqueda.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filteredTeam.map((member) => {
+        const assigned = member.assigned || 0;
+        const completed = member.completed || 0;
+        const pending = member.pending !== undefined ? member.pending : (assigned - completed);
+        const pct = assigned > 0 ? Math.round((completed / assigned) * 100) : 0;
+        const initials = member.name.substring(0, 2).toUpperCase();
+
+        return `
+          <tr class="team-row hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors" data-name="${member.name}">
+            <td class="py-4 px-4 sm:px-6">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold flex items-center justify-center border border-blue-500/20">
+                  ${initials}
+                </div>
+                <div>
+                  <p class="font-bold text-slate-900 dark:text-white">${member.name}</p>
+                </div>
+              </div>
+            </td>
+            <td class="py-4 px-4 text-center text-slate-900 dark:text-slate-100 font-semibold">${assigned.toLocaleString()}</td>
+            <td class="py-4 px-4 text-center">
+              <span class="inline-flex items-center gap-1 font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                <i class="fa-solid fa-circle-check text-[10px]"></i> ${completed.toLocaleString()}
+              </span>
+            </td>
+            <td class="py-4 px-4 text-center text-amber-600 dark:text-amber-400 font-semibold">${pending.toLocaleString()}</td>
+            <td class="py-4 px-4 text-center">
+              <div class="flex items-center justify-center gap-3">
+                <div class="w-28 h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                  <div class="h-full bg-emerald-500 rounded-full" style="width: ${pct}%;"></div>
+                </div>
+                <span class="font-bold text-xs text-slate-900 dark:text-white">${pct}%</span>
+              </div>
+            </td>
+            <td class="py-4 px-4 text-right pr-6">
+              <button onclick="openDetailModalByName('${member.name}')" class="p-2 rounded-lg text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800 transition-colors" title="Ver Detalle">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('searchInput').addEventListener('input', renderTable);
+
+    function renderAll() {
+      renderWeekSelector();
+      recalculateKPIs();
+      renderFilterButtons();
+      renderTable();
+      initTeamChart();
+      initDailyChart();
+      initDoughnutChart();
+    }
+
+    function detectWeekNameFromFile(filename, workbook, jsonData) {
+      let weekNum = null;
+
+      const nameMatch = filename.match(/semana[_\s-]*(\d+)/i) || filename.match(/sem[_\s-]*(\d+)/i);
+      if (nameMatch && nameMatch[1]) {
+        weekNum = parseInt(nameMatch[1]);
+      }
+
+      if (!weekNum && workbook && workbook.SheetNames && workbook.SheetNames.length > 0) {
+        const sheetName = workbook.SheetNames[0];
+        const sheetMatch = sheetName.match(/semana[_\s-]*(\d+)/i);
+        if (sheetMatch && sheetMatch[1]) {
+          weekNum = parseInt(sheetMatch[1]);
+        }
+      }
+
+      const nextWeekIndex = state.weeks.length + 1;
+      const actualNum = weekNum || nextWeekIndex;
+
+      const startDate = new Date(2026, 6, 20);
+      startDate.setDate(startDate.getDate() + (nextWeekIndex - 1) * 7);
+      const endDate = new Date(startDate);
+      endDate.setDate(endDate.getDate() + 4);
+
+      const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+      const dateRangeShort = `${startDate.getDate()} ${months[startDate.getMonth()]} - ${endDate.getDate()} ${months[endDate.getMonth()]}`;
+      const dateRangeFull = `Semana del ${startDate.getDate()} al ${endDate.getDate()} de ${startDate.toLocaleString('es-ES', { month: 'long' })}, ${startDate.getFullYear()}`;
+
+      return {
+        id: `week_${Date.now()}`,
+        name: `Semana ${actualNum} (${dateRangeShort})`,
+        dateStr: dateRangeFull
+      };
+    }
+
+    // --- Sincronización Automática desde Google Sheets / Nube ---
+    async function syncCloudDataAsNewWeek() {
+      closeFeedModal(); // Cerrar modal de opciones primero
+      
+      const defaultUrl = "https://docs.google.com/spreadsheets/d/TU_ID_DE_HOJA/export?format=csv";
+      const sheetCsvUrl = prompt("Ingresa el enlace CSV publicado de tu Google Sheet:", defaultUrl);
+      
+      if (!sheetCsvUrl || sheetCsvUrl === defaultUrl) {
+        if (!sheetCsvUrl) return;
+        showToast('Por favor, ingresa un enlace de Google Sheet válido.', 'error');
+        return;
+      }
+
+      try {
+        showToast('Sincronizando datos desde la nube...', 'info');
+        
+        const response = await fetch(sheetCsvUrl);
+        if (!response.ok) throw new Error('No se pudo acceder al archivo en la nube.');
+        
+        const arrayBuffer = await response.arrayBuffer();
+        const data = new Uint8Array(arrayBuffer);
+        const workbook = XLSX.read(data, { type: 'array', cellDates: true });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+        parseAndApplyExcel(jsonData, "Cloud_Google_Sheets.csv", workbook);
+        showToast('¡Nueva semana sincronizada desde la nube con éxito!', 'success');
+      } catch (error) {
+        console.error('Error de sincronización remota:', error);
+        showToast('Error al conectar con la hoja de cálculo en la nube.', 'error');
+      }
+    }
+
+    // Modal de Opciones Consolidadas
+    const feedModal = document.getElementById('feedModal');
+    const feedModalContainer = document.getElementById('feedModalContainer');
+    const openFeedModalBtn = document.getElementById('openFeedModalBtn');
+
+    openFeedModalBtn.addEventListener('click', () => {
+      feedModal.classList.remove('hidden');
+      setTimeout(() => {
+        feedModal.classList.remove('opacity-0');
+        feedModalContainer.classList.remove('scale-95');
+      }, 10);
+    });
+
+    function closeFeedModal() {
+      feedModal.classList.add('opacity-0');
+      feedModalContainer.classList.add('scale-95');
+      setTimeout(() => {
+        feedModal.classList.add('hidden');
+      }, 200);
+    }
+
+    feedModal.addEventListener('click', (e) => {
+      if (e.target === feedModal) closeFeedModal();
+    });
+
+    const excelFileInput = document.getElementById('excelFileInput');
+    const dropZone = document.getElementById('dropZone');
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-over');
+      }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+      }, false);
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      if (files.length > 0) processExcelFile(files[0]);
+    });
+
+    excelFileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        processExcelFile(e.target.files[0]);
+      }
+    });
+
+    function processExcelFile(file) {
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array', cellDates: true });
+
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+          parseAndApplyExcel(jsonData, file.name, workbook);
+        } catch (err) {
+          console.error(err);
+          showToast('Error al leer el archivo Excel. Formato no compatible.', 'error');
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function parseAndApplyExcel(rows, filename, workbook) {
+      if (!rows || rows.length < 2) {
+        showToast('El archivo no contiene suficientes datos.', 'error');
+        return;
+      }
+
+      let headerIdx = -1;
+      let headers = [];
+
+      for (let i = 0; i < Math.min(rows.length, 10); i++) {
+        const r = rows[i];
+        if (Array.isArray(r)) {
+          const rStr = r.map(c => String(c).toLowerCase());
+          if (rStr.some(c => c.includes('gestor') || c.includes('analista') || c.includes('nombre') || c.includes('integrante') || c.includes('asignado'))) {
+            headerIdx = i;
+            headers = rStr;
+            break;
+          }
+        }
+      }
+
+      let parsedTeam = [];
+
+      if (headerIdx !== -1) {
+        const nameCol = headers.findIndex(h => h.includes('gestor') || h.includes('analista') || h.includes('nombre') || h.includes('integrante'));
+        const assignedCol = headers.findIndex(h => h.includes('asigna') || h.includes('total') || h.includes('backlog'));
+        const completedCol = headers.findIndex(h => h.includes('completa') || h.includes('hecho') || h.includes('finaliza') || h.includes('resuelto'));
+        const pendingCol = headers.findIndex(h => h.includes('pendien') || h.includes('falta') || h.includes('cola'));
+
+        const monCol = headers.findIndex(h => h.includes('lun'));
+        const tueCol = headers.findIndex(h => h.includes('mar'));
+        const wedCol = headers.findIndex(h => h.includes('mié') || h.includes('mie'));
+        const thuCol = headers.findIndex(h => h.includes('jue'));
+        const friCol = headers.findIndex(h => h.includes('vie'));
+
+        if (nameCol !== -1 && (assignedCol !== -1 || completedCol !== -1)) {
+          for (let i = headerIdx + 1; i < rows.length; i++) {
+            const row = rows[i];
+            if (!row || !row[nameCol]) continue;
+
+            const name = String(row[nameCol]).trim();
+            if (!name || name.toLowerCase().includes('total') || name.toLowerCase().includes('promedio')) continue;
+
+            const assigned = assignedCol !== -1 ? parseInt(row[assignedCol]) || 0 : 1000;
+            const completed = completedCol !== -1 ? parseInt(row[completedCol]) || 0 : 0;
+            const pending = pendingCol !== -1 ? parseInt(row[pendingCol]) || (assigned - completed) : (assigned - completed);
+
+            const daily = [
+              monCol !== -1 ? parseInt(row[monCol]) || 0 : Math.round(completed * 0.2),
+              tueCol !== -1 ? parseInt(row[tueCol]) || 0 : Math.round(completed * 0.22),
+              wedCol !== -1 ? parseInt(row[wedCol]) || 0 : Math.round(completed * 0.18),
+              thuCol !== -1 ? parseInt(row[thuCol]) || 0 : Math.round(completed * 0.22),
+              friCol !== -1 ? parseInt(row[friCol]) || 0 : Math.round(completed * 0.18)
+            ];
+
+            parsedTeam.push({
+              name: name,
+              assigned: assigned,
+              completed: completed,
+              pending: pending,
+              daily: daily
+            });
+          }
+        }
+      }
+
+      if (parsedTeam.length === 0 && headerIdx !== -1) {
+        const nameCol = headers.findIndex(h => h.includes('gestor') || h.includes('analista') || h.includes('responsable') || h.includes('usuario'));
+        const statusCol = headers.findIndex(h => h.includes('estado') || h.includes('status') || h.includes('estatus'));
+
+        if (nameCol !== -1) {
+          const map = {};
+          for (let i = headerIdx + 1; i < rows.length; i++) {
+            const row = rows[i];
+            if (!row || !row[nameCol]) continue;
+
+            const name = String(row[nameCol]).trim();
+            if (!name) continue;
+
+            if (!map[name]) {
+              map[name] = { name: name, assigned: 0, completed: 0, pending: 0, daily: [0, 0, 0, 0, 0] };
+            }
+
+            map[name].assigned += 1;
+            const status = statusCol !== -1 ? String(row[statusCol]).toLowerCase() : '';
+            if (status.includes('complet') || status.includes('final') || status.includes('hecho') || status.includes('ok') || status.includes('cerrad')) {
+              map[name].completed += 1;
+              const dayIndex = Math.floor(Math.random() * 5);
+              map[name].daily[dayIndex] += 1;
+            } else {
+              map[name].pending += 1;
+            }
+          }
+          parsedTeam = Object.values(map);
+        }
+      }
+
+      const weekDetails = detectWeekNameFromFile(filename, workbook, rows);
+      const newWeek = {
+        id: weekDetails.id,
+        name: weekDetails.name,
+        dateStr: weekDetails.dateStr,
+        team: parsedTeam
+      };
+
+      state.weeks.push(newWeek);
+      state.currentWeekId = newWeek.id;
+      guardarDatosEnNavegador(); // Guardar automáticamente en localStorage
+
+      const now = new Date();
+      document.getElementById('lastUpdate').textContent = `${now.toLocaleDateString('es-ES')} ${now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`;
+
+      confetti();
+      renderAll();
+      showToast('Archivo importado con éxito.', 'success');
+      closeFeedModal();
+    }
+
+    function closeDetailModal() {
+      const modal = document.getElementById('detailModal');
+      const container = document.getElementById('modalContainer');
+      modal.classList.add('opacity-0');
+      container.classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 200);
+    }
+
+    document.getElementById('detailModal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('detailModal')) closeDetailModal();
+    });
+
+    document.getElementById('exportCsvBtnModal').addEventListener('click', () => {
+      closeFeedModal(); // Cerramos el menú
+      const activeW = getActiveWeek();
+      let csv = `Reporte: ${activeW.name}\n`;
+      csv += 'Integrante,Asignados,Completados,Pendientes,Progreso (%),Lunes,Martes,Miércoles,Jueves,Viernes\n';
+      activeW.team.forEach(m => {
+        const prog = m.assigned > 0 ? ((m.completed / m.assigned) * 100).toFixed(1) : 0;
+        const daily = m.daily || [0, 0, 0, 0, 0];
+        csv += `"${m.name}",${m.assigned},${m.completed},${m.pending},${prog}%,${daily[0] || 0},${daily[1] || 0},${daily[2] || 0},${daily[3] || 0},${daily[4] || 0}\n`;
+      });
+
+      const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `Reporte_${activeW.name.replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      showToast(`Archivo CSV de "${activeW.name}" generado con éxito.`);
+    });
+
+    // Inicialización al cargar la página con persistencia local
+    window.addEventListener('DOMContentLoaded', () => {
+      cargarDatosDelNavegador();
+      renderAll();
+    });
+  </script>
+</body>
+</html>

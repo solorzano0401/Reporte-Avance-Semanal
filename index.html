@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -101,22 +101,22 @@
   </style>
 </head>
 
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen antialiased selection:bg-blue-500 selection:text-white">
+<body class="bg-slate-50 text-slate-900 min-h-screen antialiased selection:bg-blue-500 selection:text-white">
 
   <!-- Main Container -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
     <!-- Header Section -->
-    <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-5 rounded-2xl shadow-sm glass-card">
+    <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white border border-slate-200 p-5 rounded-2xl shadow-sm glass-card">
       <div class="flex items-center gap-4">
         <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
           <i class="fa-solid fa-chart-line text-xl"></i>
         </div>
         <div>
           <div class="flex items-center gap-3">
-            <h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Reporte de Avance Semanal</h1>
+            <h1 class="text-2xl font-bold tracking-tight text-slate-900">Reporte de Avance Semanal</h1>
           </div>
-          <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5 flex items-center gap-2">
+          <p class="text-sm text-slate-500 mt-0.5 flex items-center gap-2">
             <i class="fa-regular fa-calendar text-xs"></i>
             <span id="headerWeekText">Semana del 20-24 de julio, 2026</span>
           </p>
@@ -125,11 +125,6 @@
 
       <!-- Action Buttons -->
       <div class="flex items-center gap-3 self-end md:self-auto flex-wrap">
-        <!-- Dark Mode Toggle -->
-        <button id="themeToggleBtn" title="Cambiar Tema" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-          <i id="themeIcon" class="fa-solid fa-moon text-sm"></i>
-        </button>
-
         <!-- Menú Consolidado: Actualizar Reporte / Opciones -->
         <button id="openFeedModalBtn" class="flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white transition-all shadow-md shadow-blue-500/20 active:scale-95">
           <i class="fa-solid fa-sliders text-xs"></i>
@@ -139,7 +134,7 @@
     </header>
 
     <!-- Filter Bar -->
-    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3.5 rounded-xl shadow-sm">
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white border border-slate-200 p-3.5 rounded-xl shadow-sm">
       
       <!-- Team Pills Filter (Rendered Dynamically) -->
       <div id="filterButtonsContainer" class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
@@ -150,13 +145,13 @@
       <div class="flex items-center gap-3">
         <div class="relative flex-1 sm:flex-none">
           <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400"></i>
-          <input id="searchInput" type="text" placeholder="Buscar integrante..." class="w-full sm:w-48 pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/40">
+          <input id="searchInput" type="text" placeholder="Buscar integrante..." class="w-full sm:w-48 pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/40">
         </div>
 
         <!-- Period Selector Dropdown (Multi-week support) -->
-        <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-lg px-2.5 py-1.5 shadow-sm">
+        <div class="flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1.5 shadow-sm">
           <i class="fa-regular fa-calendar-check text-blue-500 text-xs"></i>
-          <select id="weekSelector" onchange="changeWeek(this.value)" class="bg-transparent text-xs font-semibold text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer">
+          <select id="weekSelector" onchange="changeWeek(this.value)" class="bg-transparent text-xs font-semibold text-slate-700 focus:outline-none cursor-pointer">
             <!-- Options populated dynamically by JS -->
           </select>
         </div>
@@ -167,85 +162,85 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       
       <!-- Total Backlog Card -->
-      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-5 rounded-2xl shadow-sm glass-card relative overflow-hidden group">
-        <div class="absolute -right-4 -bottom-4 opacity-5 dark:opacity-10 group-hover:scale-110 transition-transform text-slate-900 dark:text-white">
+      <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm glass-card relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-110 transition-transform text-slate-900">
           <i class="fa-solid fa-layer-group text-8xl"></i>
         </div>
         <div class="flex items-center justify-between mb-3">
-          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Backlog</span>
-          <span class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Total Backlog</span>
+          <span class="p-2 rounded-xl bg-slate-100 text-slate-600">
             <i class="fa-solid fa-list-check text-sm"></i>
           </span>
         </div>
         <div class="flex items-baseline gap-2">
-          <span class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white" id="kpi-total">3,376</span>
-          <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">elementos</span>
+          <span class="text-3xl font-extrabold tracking-tight text-slate-900" id="kpi-total">3,376</span>
+          <span class="text-xs text-slate-500 font-medium">elementos</span>
         </div>
-        <div class="mt-3 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+        <div class="mt-3 flex items-center gap-1.5 text-xs text-slate-500">
           <i class="fa-solid fa-database text-blue-500"></i>
           <span>Capacidad total asignada</span>
         </div>
       </div>
 
       <!-- Completados Card -->
-      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-5 rounded-2xl shadow-sm glass-card glow-success relative overflow-hidden group">
-        <div class="absolute -right-4 -bottom-4 opacity-5 dark:opacity-10 group-hover:scale-110 transition-transform text-emerald-500">
+      <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm glass-card glow-success relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-110 transition-transform text-emerald-500">
           <i class="fa-solid fa-circle-check text-8xl"></i>
         </div>
         <div class="flex items-center justify-between mb-3">
-          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Completados</span>
-          <span class="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Completados</span>
+          <span class="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
             <i class="fa-solid fa-check text-sm"></i>
           </span>
         </div>
         <div class="flex items-baseline gap-2">
-          <span class="text-3xl font-extrabold tracking-tight text-emerald-600 dark:text-emerald-400" id="kpi-completed">926</span>
-          <span id="kpi-completed-pct" class="inline-flex items-center text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-1.5 py-0.5 rounded">
+          <span class="text-3xl font-extrabold tracking-tight text-emerald-600" id="kpi-completed">926</span>
+          <span id="kpi-completed-pct" class="inline-flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">
             <i class="fa-solid fa-arrow-trend-up mr-1 text-[10px]"></i>27.4%
           </span>
         </div>
-        <div class="mt-3 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+        <div class="mt-3 flex items-center gap-1.5 text-xs text-slate-500">
           <i class="fa-solid fa-bolt text-amber-500"></i>
           <span>Procesados exitosamente</span>
         </div>
       </div>
 
       <!-- Pendientes Card -->
-      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-5 rounded-2xl shadow-sm glass-card glow-warning relative overflow-hidden group">
-        <div class="absolute -right-4 -bottom-4 opacity-5 dark:opacity-10 group-hover:scale-110 transition-transform text-amber-500">
+      <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm glass-card glow-warning relative overflow-hidden group">
+        <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-110 transition-transform text-amber-500">
           <i class="fa-solid fa-clock text-8xl"></i>
         </div>
         <div class="flex items-center justify-between mb-3">
-          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Pendientes</span>
-          <span class="p-2 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Pendientes</span>
+          <span class="p-2 rounded-xl bg-amber-500/10 text-amber-600 border border-amber-500/20">
             <i class="fa-solid fa-hourglass-half text-sm"></i>
           </span>
         </div>
         <div class="flex items-baseline gap-2">
-          <span class="text-3xl font-extrabold tracking-tight text-amber-600 dark:text-amber-400" id="kpi-pending">2,450</span>
-          <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">en cola</span>
+          <span class="text-3xl font-extrabold tracking-tight text-amber-600" id="kpi-pending">2,450</span>
+          <span class="text-xs text-slate-500 font-medium">en cola</span>
         </div>
-        <div class="mt-3 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+        <div class="mt-3 flex items-center gap-1.5 text-xs text-slate-500">
           <i class="fa-solid fa-circle-notch text-amber-500 animate-spin"></i>
           <span>En proceso de atención</span>
         </div>
       </div>
 
       <!-- Progreso Card -->
-      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-5 rounded-2xl shadow-sm glass-card glow-primary relative overflow-hidden group">
+      <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm glass-card glow-primary relative overflow-hidden group">
         <div class="flex items-center justify-between mb-3">
-          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Tasa de Progreso</span>
-          <span class="p-2 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Tasa de Progreso</span>
+          <span class="p-2 rounded-xl bg-blue-500/10 text-blue-600 border border-blue-500/20">
             <i class="fa-solid fa-chart-pie text-sm"></i>
           </span>
         </div>
         <div class="flex items-baseline justify-between">
-          <span class="text-3xl font-extrabold tracking-tight text-blue-600 dark:text-blue-400" id="kpi-progress">27.4%</span>
-          <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Meta: 100%</span>
+          <span class="text-3xl font-extrabold tracking-tight text-blue-600" id="kpi-progress">27.4%</span>
+          <span class="text-xs font-semibold text-slate-500">Meta: 100%</span>
         </div>
         <!-- Progress bar -->
         <div class="mt-3">
-          <div class="h-2.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-200/50 dark:border-slate-800">
+          <div class="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/50">
             <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-700 ease-out" style="width: 27.4%;"></div>
           </div>
           <div class="flex justify-between text-[11px] text-slate-400 mt-1">
@@ -262,14 +257,14 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
       
       <!-- Team Progress Distribution (6 cols) -->
-      <div class="lg:col-span-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-5 rounded-2xl shadow-sm glass-card flex flex-col justify-between">
+      <div class="lg:col-span-6 bg-white border border-slate-200 p-5 rounded-2xl shadow-sm glass-card flex flex-col justify-between">
         <div class="flex items-center justify-between mb-4">
           <div>
-            <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
               <i class="fa-solid fa-chart-bar text-emerald-500"></i>
               Avance por Equipo
             </h2>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Comparativa de completados vs pendientes</p>
+            <p class="text-xs text-slate-500">Comparativa de completados vs pendientes</p>
           </div>
         </div>
         <div class="relative h-64 w-full">
@@ -278,16 +273,16 @@
       </div>
 
       <!-- Donut Chart / Gráfica de Anillo (6 cols) -->
-      <div class="lg:col-span-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-5 rounded-2xl shadow-sm glass-card flex flex-col justify-between">
+      <div class="lg:col-span-6 bg-white border border-slate-200 p-5 rounded-2xl shadow-sm glass-card flex flex-col justify-between">
         <div class="flex items-center justify-between mb-2">
           <div>
-            <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
               <i class="fa-solid fa-chart-pie text-indigo-500"></i>
               Distribución de Completados
             </h2>
-            <p class="text-xs text-slate-500 dark:text-slate-400">Aportación relativa de elementos completados por integrante</p>
+            <p class="text-xs text-slate-500">Aportación relativa de elementos completados por integrante</p>
           </div>
-          <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20">
+          <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-500/10 text-indigo-600 border border-indigo-500/20">
             Proporción Semanal
           </span>
         </div>
@@ -299,14 +294,14 @@
     </div>
 
     <!-- Daily Progress Section (Full Width Grid) -->
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-5 rounded-2xl shadow-sm glass-card">
+    <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm glass-card">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
         <div>
-          <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
             <i class="fa-solid fa-calendar-days text-indigo-500"></i>
             Avance Diario por Gestor (Semana Actual)
           </h2>
-          <p class="text-xs text-slate-500 dark:text-slate-400">Productividad diaria registrada de lunes a viernes</p>
+          <p class="text-xs text-slate-500">Productividad diaria registrada de lunes a viernes</p>
         </div>
         <div id="dailyChartLegend" class="flex flex-wrap items-center gap-3 text-xs">
           <!-- Populated by JS -->
@@ -318,14 +313,14 @@
     </div>
 
     <!-- Team Table Section -->
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-sm glass-card overflow-hidden">
-      <div class="p-5 border-b border-slate-200 dark:border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm glass-card overflow-hidden">
+      <div class="p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
             <i class="fa-solid fa-users text-indigo-500"></i>
             Detalle por Integrante
           </h2>
-          <p class="text-xs text-slate-500 dark:text-slate-400">Métricas desagregadas por analista asignado</p>
+          <p class="text-xs text-slate-500">Métricas desagregadas por analista asignado</p>
         </div>
         
         <div id="activeMembersBadge" class="flex items-center gap-2 text-xs text-slate-500 font-medium">
@@ -336,7 +331,7 @@
       <div class="overflow-x-auto">
         <table class="w-full text-left text-xs sm:text-sm border-collapse">
           <thead>
-            <tr class="bg-slate-50/80 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider text-[11px]">
+            <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-semibold uppercase tracking-wider text-[11px]">
               <th class="py-3.5 px-4 sm:px-6">Integrante</th>
               <th class="py-3.5 px-4 text-center">Asignados</th>
               <th class="py-3.5 px-4 text-center">Completados</th>
@@ -345,7 +340,7 @@
               <th class="py-3.5 px-4 text-right pr-6">Acciones</th>
             </tr>
           </thead>
-          <tbody id="teamTableBody" class="divide-y divide-slate-200 dark:divide-slate-800 text-slate-700 dark:text-slate-200 font-medium">
+          <tbody id="teamTableBody" class="divide-y divide-slate-200 text-slate-700 font-medium">
             <!-- Dynamic Rows rendered via JS -->
           </tbody>
         </table>
@@ -353,10 +348,10 @@
     </div>
 
     <!-- Footer -->
-    <footer class="pt-4 pb-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 dark:text-slate-500 border-t border-slate-200 dark:border-slate-800/60 gap-2">
+    <footer class="pt-4 pb-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 border-t border-slate-200 gap-2">
       <div class="flex items-center gap-2">
         <i class="fa-solid fa-rotate text-blue-500"></i>
-        <span>Última actualización sincronizada: <strong id="lastUpdate" class="text-slate-600 dark:text-slate-300">26/07/2026 05:00 PM</strong></span>
+        <span>Última actualización sincronizada: <strong id="lastUpdate" class="text-slate-600">--</strong></span>
       </div>
       <div>
         <span>Reporte Avance Semanal</span>
@@ -367,18 +362,18 @@
 
   <!-- Consolidated "Opciones de Reporte" Modal -->
   <div id="feedModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200 p-4">
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-200" id="feedModalContainer">
-      <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+    <div class="bg-white border border-slate-200 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-200" id="feedModalContainer">
+      <div class="p-5 border-b border-slate-200 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold flex items-center justify-center border border-blue-500/20">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 font-bold flex items-center justify-center border border-blue-500/20">
             <i class="fa-solid fa-sliders text-lg"></i>
           </div>
           <div>
-            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Opciones de Reporte</h3>
+            <h3 class="text-lg font-bold text-slate-900">Opciones de Reporte</h3>
             <p class="text-xs text-slate-400">Actualiza, sincroniza o gestiona los datos</p>
           </div>
         </div>
-        <button onclick="closeFeedModal()" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg transition-colors">
+        <button onclick="closeFeedModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-lg transition-colors">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
@@ -386,15 +381,15 @@
       <div class="p-6 space-y-6">
         <!-- Local Upload Zone -->
         <div>
-          <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
+          <h4 class="text-sm font-semibold text-slate-800 mb-3 flex items-center gap-2">
             <i class="fa-solid fa-file-excel text-emerald-500"></i> Cargar Archivo Local
           </h4>
-          <div id="dropZone" class="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-500 rounded-2xl p-6 flex flex-col items-center justify-center text-center bg-slate-50/50 dark:bg-slate-800/30 transition-all cursor-pointer">
+          <div id="dropZone" class="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-2xl p-6 flex flex-col items-center justify-center text-center bg-slate-50/50 transition-all cursor-pointer">
             <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" class="hidden">
-            <div class="w-12 h-12 rounded-full bg-blue-50 dark:bg-slate-800 text-blue-500 flex items-center justify-center mb-3 text-xl">
+            <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center mb-3 text-xl">
               <i class="fa-solid fa-cloud-arrow-up"></i>
             </div>
-            <p class="text-sm font-bold text-slate-800 dark:text-slate-200">Arrastra tu archivo Excel aquí</p>
+            <p class="text-sm font-bold text-slate-800">Arrastra tu archivo Excel aquí</p>
             <p class="text-xs text-slate-400 mt-1">Soporta <span class="font-mono text-emerald-500">.xlsx</span>, <span class="font-mono text-emerald-500">.xls</span>, <span class="font-mono text-emerald-500">.csv</span>.</p>
             <button type="button" onclick="document.getElementById('excelFileInput').click()" class="mt-4 px-4 py-2 text-xs font-semibold rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition-all shadow-md shadow-blue-500/20">
               Examinar archivo
@@ -404,25 +399,25 @@
 
         <!-- Extra Actions Grid -->
         <div>
-          <h4 class="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
+          <h4 class="text-sm font-semibold text-slate-800 mb-3 flex items-center gap-2">
             <i class="fa-solid fa-bolt text-amber-500"></i> Acciones Adicionales
           </h4>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             
             <!-- Sincronizar Nube -->
-            <button onclick="syncCloudDataAsNewWeek()" class="flex flex-col items-center justify-center p-3 gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-all shadow-sm group">
+            <button onclick="syncCloudDataAsNewWeek()" class="flex flex-col items-center justify-center p-3 gap-2 rounded-xl border border-slate-200 bg-white hover:bg-blue-50 text-slate-700 transition-all shadow-sm group">
               <i class="fa-solid fa-cloud-arrow-down text-blue-500 text-xl group-hover:scale-110 transition-transform"></i>
               <span class="text-xs font-semibold text-center leading-tight">Sincronizar<br>Nube</span>
             </button>
             
             <!-- Exportar Data -->
-            <button id="exportCsvBtnModal" class="flex flex-col items-center justify-center p-3 gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-all shadow-sm group">
+            <button id="exportCsvBtnModal" class="flex flex-col items-center justify-center p-3 gap-2 rounded-xl border border-slate-200 bg-white hover:bg-emerald-50 text-slate-700 transition-all shadow-sm group">
               <i class="fa-solid fa-file-csv text-emerald-500 text-xl group-hover:scale-110 transition-transform"></i>
               <span class="text-xs font-semibold text-center leading-tight">Exportar<br>Data</span>
             </button>
 
             <!-- Limpiar Data -->
-            <button id="resetDataBtnModal" class="flex flex-col items-center justify-center p-3 gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-slate-700 hover:border-rose-200 dark:hover:border-rose-900 text-slate-700 dark:text-slate-200 transition-all shadow-sm group">
+            <button id="resetDataBtnModal" class="flex flex-col items-center justify-center p-3 gap-2 rounded-xl border border-slate-200 bg-white hover:bg-rose-50 hover:border-rose-200 text-slate-700 transition-all shadow-sm group">
               <i class="fa-solid fa-rotate-left text-rose-500 text-xl group-hover:scale-110 transition-transform"></i>
               <span class="text-xs font-semibold text-center leading-tight">Limpiar<br>Data</span>
             </button>
@@ -431,8 +426,8 @@
         </div>
       </div>
 
-      <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800 flex justify-end">
-        <button onclick="closeFeedModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-xs font-semibold rounded-xl transition-colors">
+      <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end">
+        <button onclick="closeFeedModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-semibold rounded-xl transition-colors">
           Cerrar Menú
         </button>
       </div>
@@ -441,18 +436,18 @@
 
   <!-- Detail Modal -->
   <div id="detailModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200 p-4">
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-200" id="modalContainer">
-      <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+    <div class="bg-white border border-slate-200 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-200" id="modalContainer">
+      <div class="p-5 border-b border-slate-200 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div id="modalAvatar" class="w-10 h-10 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold flex items-center justify-center border border-blue-500/20">
+          <div id="modalAvatar" class="w-10 h-10 rounded-full bg-blue-500/10 text-blue-600 font-bold flex items-center justify-center border border-blue-500/20">
             --
           </div>
           <div>
-            <h3 id="modalName" class="text-lg font-bold text-slate-900 dark:text-white">Nombre</h3>
+            <h3 id="modalName" class="text-lg font-bold text-slate-900">Nombre</h3>
             <p class="text-xs text-slate-400">Rendimiento y Desglose Individual</p>
           </div>
         </div>
-        <button onclick="closeDetailModal()" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg">
+        <button onclick="closeDetailModal()" class="p-2 text-slate-400 hover:text-slate-600 rounded-lg">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
@@ -460,31 +455,31 @@
       <div class="p-5 space-y-4">
         <!-- Key Stats Grid -->
         <div class="grid grid-cols-3 gap-3 text-center">
-          <div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800">
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
             <p class="text-[11px] text-slate-400 uppercase font-semibold">Asignados</p>
-            <p id="modalAssigned" class="text-lg font-bold text-slate-900 dark:text-white">0</p>
+            <p id="modalAssigned" class="text-lg font-bold text-slate-900">0</p>
           </div>
-          <div class="p-3 bg-emerald-50 dark:bg-emerald-950/30 rounded-xl border border-emerald-500/20">
-            <p class="text-[11px] text-emerald-600 dark:text-emerald-400 uppercase font-semibold">Completados</p>
-            <p id="modalCompleted" class="text-lg font-bold text-emerald-600 dark:text-emerald-400">0</p>
+          <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-500/20">
+            <p class="text-[11px] text-emerald-600 uppercase font-semibold">Completados</p>
+            <p id="modalCompleted" class="text-lg font-bold text-emerald-600">0</p>
           </div>
-          <div class="p-3 bg-amber-50 dark:bg-amber-950/30 rounded-xl border border-amber-500/20">
-            <p class="text-[11px] text-amber-600 dark:text-amber-400 uppercase font-semibold">Pendientes</p>
-            <p id="modalPending" class="text-lg font-bold text-amber-600 dark:text-amber-400">0</p>
+          <div class="p-3 bg-amber-50 rounded-xl border border-amber-500/20">
+            <p class="text-[11px] text-amber-600 uppercase font-semibold">Pendientes</p>
+            <p id="modalPending" class="text-lg font-bold text-amber-600">0</p>
           </div>
         </div>
 
         <!-- Mini Modal Chart -->
         <div>
-          <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">Avance Diario (Lun - Vie)</p>
+          <p class="text-xs font-semibold text-slate-700 mb-2">Avance Diario (Lun - Vie)</p>
           <div class="h-44 w-full relative">
             <canvas id="modalChart"></canvas>
           </div>
         </div>
       </div>
 
-      <div class="p-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800 flex justify-end">
-        <button onclick="closeDetailModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 text-xs font-semibold rounded-xl transition-colors">
+      <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end">
+        <button onclick="closeDetailModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-semibold rounded-xl transition-colors">
           Cerrar
         </button>
       </div>
@@ -496,17 +491,17 @@
 
   <!-- Reset Confirmation Modal -->
   <div id="resetModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200 p-4">
-    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-200" id="resetModalContainer">
+    <div class="bg-white border border-slate-200 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-200" id="resetModalContainer">
       <div class="p-6 text-center space-y-4">
         <div class="w-14 h-14 rounded-2xl bg-rose-500/10 text-rose-500 font-bold flex items-center justify-center mx-auto border border-rose-500/20">
           <i class="fa-solid fa-arrow-rotate-left text-2xl"></i>
         </div>
         <div>
-          <h3 class="text-lg font-bold text-slate-900 dark:text-white">¿Restablecer datos al inicio?</h3>
-          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Esta acción eliminará las semanas adicionales importadas y volverá a la configuración inicial por defecto (Semana 1).</p>
+          <h3 class="text-lg font-bold text-slate-900">¿Restablecer datos al inicio?</h3>
+          <p class="text-xs text-slate-500 mt-1">Esta acción eliminará las semanas adicionales importadas y volverá a la configuración inicial por defecto (Semana 1).</p>
         </div>
         <div class="flex items-center justify-center gap-3 pt-2">
-          <button onclick="closeResetModal()" class="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl transition-colors w-full">
+          <button onclick="closeResetModal()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors w-full">
             Cancelar
           </button>
           <button onclick="confirmResetData()" class="px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded-xl transition-all shadow-md shadow-rose-500/20 w-full">
@@ -552,18 +547,65 @@
     // Global state initialized from template
     let state = JSON.parse(JSON.stringify(INITIAL_STATE));
 
-    // --- Persistencia con LocalStorage ---
-    function guardarDatosEnNavegador() {
-      localStorage.setItem('dashboard_state_mac', JSON.stringify(state));
+    // Actualiza el sello de "Última actualización sincronizada" con la hora real actual
+    function actualizarSelloSincronizacion() {
+      const el = document.getElementById('lastUpdate');
+      if (!el) return;
+      const now = new Date();
+      el.textContent = `${now.toLocaleDateString('es-ES')} ${now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`;
     }
 
-    function cargarDatosDelNavegador() {
+    // --- Persistencia compartida en la nube (Google Sheets vía Apps Script) ---
+    const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbwCWr5Sbc2RV8pd0fgh37x4FCsp35DgjTdtVyZCE0VnrmN1OvzV6jVEkNDCmaSce7YaDQ/exec";
+
+    // Guarda el estado tanto localmente (respaldo offline) como en la nube (compartido)
+    function guardarDatosEnNavegador() {
+      localStorage.setItem('dashboard_state_mac', JSON.stringify(state));
+      guardarDatosEnLaNube();
+    }
+
+    async function guardarDatosEnLaNube() {
+      try {
+        await fetch(SHEETS_API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // evita preflight CORS
+          body: JSON.stringify(state)
+        });
+        actualizarSelloSincronizacion();
+      } catch (e) {
+        console.error("Error al guardar en la nube:", e);
+      }
+    }
+
+    // Carga el estado desde la nube; si falla, usa el respaldo local
+    async function cargarDatosDelNavegador() {
+      try {
+        const response = await fetch(SHEETS_API_URL, { method: 'GET', cache: 'no-store' });
+        if (!response.ok) throw new Error('Respuesta no válida del servidor.');
+        const text = await response.text();
+        if (text && text.trim().length > 0) {
+          const parsedState = JSON.parse(text);
+          if (parsedState && parsedState.weeks) {
+            state = parsedState;
+            localStorage.setItem('dashboard_state_mac', JSON.stringify(state)); // sincroniza respaldo local
+            actualizarSelloSincronizacion();
+            return;
+          }
+        }
+        cargarDesdeRespaldoLocal();
+      } catch (e) {
+        console.error("Error al cargar datos de la nube, usando respaldo local:", e);
+        cargarDesdeRespaldoLocal();
+      }
+    }
+
+    function cargarDesdeRespaldoLocal() {
       const datosGuardados = localStorage.getItem('dashboard_state_mac');
       if (datosGuardados) {
         try {
           const parsedState = JSON.parse(datosGuardados);
           if (parsedState && parsedState.weeks) {
-            state = parsedState; // Restaura el estado completo con todas las semanas
+            state = parsedState;
           }
         } catch (e) {
           console.error("Error al cargar datos de localStorage:", e);
@@ -596,7 +638,7 @@
       state = JSON.parse(JSON.stringify(INITIAL_STATE));
       guardarDatosEnNavegador(); // Guardar el reseteo en localStorage
       document.getElementById('searchInput').value = '';
-      document.getElementById('lastUpdate').textContent = '26/07/2026 05:00 PM';
+      actualizarSelloSincronizacion();
       closeResetModal();
       renderAll();
       showToast('Se ha restablecido el dashboard a los datos iniciales.', 'info');
@@ -614,28 +656,63 @@
     let teamChartInstance = null;
     let dailyChartInstance = null;
     let modalChartInstance = null;
+
+    // Abre el modal de detalle individual para un integrante del equipo (por nombre)
+    function openDetailModalByName(name) {
+      const activeW = getActiveWeek();
+      const member = activeW.team.find(m => m.name === name);
+      if (!member) return;
+
+      const idx = activeW.team.indexOf(member);
+      const color = MEMBER_COLORS[idx % MEMBER_COLORS.length];
+
+      document.getElementById('modalName').textContent = member.name;
+      document.getElementById('modalAvatar').textContent = member.name.substring(0, 2).toUpperCase();
+      document.getElementById('modalAvatar').style.backgroundColor = `${color}1A`;
+      document.getElementById('modalAvatar').style.color = color;
+      document.getElementById('modalAssigned').textContent = member.assigned;
+      document.getElementById('modalCompleted').textContent = member.completed;
+      document.getElementById('modalPending').textContent = member.pending;
+
+      const ctx = document.getElementById('modalChart').getContext('2d');
+      if (modalChartInstance) modalChartInstance.destroy();
+      modalChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie'],
+          datasets: [{
+            label: 'Completados',
+            data: member.daily || [0, 0, 0, 0, 0],
+            borderColor: color,
+            backgroundColor: `${color}33`,
+            fill: true,
+            tension: 0.35,
+            pointRadius: 4,
+            pointBackgroundColor: color,
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2,
+            borderWidth: 2.5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, ticks: { precision: 0 } }
+          }
+        }
+      });
+
+      const modal = document.getElementById('detailModal');
+      const container = document.getElementById('modalContainer');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        container.classList.remove('scale-95');
+      }, 10);
+    }
     let doughnutChartInstance = null;
-
-    // Theme Switcher Logic
-    const themeToggleBtn = document.getElementById('themeToggleBtn');
-    const themeIcon = document.getElementById('themeIcon');
-
-    function isDark() {
-      return document.documentElement.classList.contains('dark');
-    }
-
-    function toggleTheme() {
-      if (isDark()) {
-        document.documentElement.classList.remove('dark');
-        themeIcon.className = 'fa-solid fa-sun text-amber-500 text-sm';
-      } else {
-        document.documentElement.classList.add('dark');
-        themeIcon.className = 'fa-solid fa-moon text-slate-300 text-sm';
-      }
-      updateChartColors();
-    }
-
-    themeToggleBtn.addEventListener('click', toggleTheme);
 
     // Toast Notification Utility
     function showToast(message, type = 'success') {
@@ -648,7 +725,7 @@
         ? '<i class="fa-solid fa-circle-exclamation text-rose-500 text-base"></i>'
         : '<i class="fa-solid fa-circle-info text-blue-500 text-base"></i>';
 
-      toast.className = 'pointer-events-auto flex items-center gap-2.5 px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl text-xs font-semibold text-slate-800 dark:text-slate-100 transform translate-y-4 opacity-0 transition-all duration-300';
+      toast.className = 'pointer-events-auto flex items-center gap-2.5 px-4 py-3 bg-white border border-slate-200 rounded-xl shadow-xl text-xs font-semibold text-slate-800 transform translate-y-4 opacity-0 transition-all duration-300';
       toast.innerHTML = `${icon} <span>${message}</span>`;
       
       toastContainer.appendChild(toast);
@@ -710,10 +787,9 @@
     }
 
     function getChartThemeColors() {
-      const dark = isDark();
       return {
-        text: dark ? '#94a3b8' : '#64748b',
-        grid: dark ? 'rgba(51, 65, 85, 0.3)' : 'rgba(226, 232, 240, 0.7)'
+        text: '#64748b',
+        grid: 'rgba(226, 232, 240, 0.7)'
       };
     }
 
@@ -739,7 +815,7 @@
             data: activeTeam.map(m => m.completed),
             backgroundColor: bgColors,
             borderWidth: 3,
-            borderColor: isDark() ? '#0f172a' : '#ffffff',
+            borderColor: '#ffffff',
             hoverOffset: 6
           }]
         },
@@ -890,8 +966,8 @@
       const activeTeam = getActiveWeek().team;
 
       let html = `
-        <span class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mr-2 hidden sm:inline">Filtrar:</span>
-        <button data-filter="all" onclick="setFilter('all')" class="team-filter-btn px-3 py-1.5 text-xs font-medium rounded-lg ${state.currentFilter === 'all' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'} transition-all">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mr-2 hidden sm:inline">Filtrar:</span>
+        <button data-filter="all" onclick="setFilter('all')" class="team-filter-btn px-3 py-1.5 text-xs font-medium rounded-lg ${state.currentFilter === 'all' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'} transition-all">
           Todos los miembros
         </button>
       `;
@@ -899,7 +975,7 @@
       activeTeam.forEach(m => {
         const active = state.currentFilter.toLowerCase() === m.name.toLowerCase();
         html += `
-          <button data-filter="${m.name}" onclick="setFilter('${m.name}')" class="team-filter-btn px-3 py-1.5 text-xs font-medium rounded-lg ${active ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'} transition-all">
+          <button data-filter="${m.name}" onclick="setFilter('${m.name}')" class="team-filter-btn px-3 py-1.5 text-xs font-medium rounded-lg ${active ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'} transition-all">
             ${m.name}
           </button>
         `;
@@ -948,34 +1024,34 @@
         const initials = member.name.substring(0, 2).toUpperCase();
 
         return `
-          <tr class="team-row hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors" data-name="${member.name}">
+          <tr class="team-row hover:bg-slate-50/60 transition-colors" data-name="${member.name}">
             <td class="py-4 px-4 sm:px-6">
               <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold flex items-center justify-center border border-blue-500/20">
+                <div class="w-9 h-9 rounded-full bg-blue-500/10 text-blue-600 font-bold flex items-center justify-center border border-blue-500/20">
                   ${initials}
                 </div>
                 <div>
-                  <p class="font-bold text-slate-900 dark:text-white">${member.name}</p>
+                  <p class="font-bold text-slate-900">${member.name}</p>
                 </div>
               </div>
             </td>
-            <td class="py-4 px-4 text-center text-slate-900 dark:text-slate-100 font-semibold">${assigned.toLocaleString()}</td>
+            <td class="py-4 px-4 text-center text-slate-900 font-semibold">${assigned.toLocaleString()}</td>
             <td class="py-4 px-4 text-center">
-              <span class="inline-flex items-center gap-1 font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+              <span class="inline-flex items-center gap-1 font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
                 <i class="fa-solid fa-circle-check text-[10px]"></i> ${completed.toLocaleString()}
               </span>
             </td>
-            <td class="py-4 px-4 text-center text-amber-600 dark:text-amber-400 font-semibold">${pending.toLocaleString()}</td>
+            <td class="py-4 px-4 text-center text-amber-600 font-semibold">${pending.toLocaleString()}</td>
             <td class="py-4 px-4 text-center">
               <div class="flex items-center justify-center gap-3">
-                <div class="w-28 h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div class="w-28 h-2 bg-slate-100 rounded-full overflow-hidden">
                   <div class="h-full bg-emerald-500 rounded-full" style="width: ${pct}%;"></div>
                 </div>
-                <span class="font-bold text-xs text-slate-900 dark:text-white">${pct}%</span>
+                <span class="font-bold text-xs text-slate-900">${pct}%</span>
               </div>
             </td>
             <td class="py-4 px-4 text-right pr-6">
-              <button onclick="openDetailModalByName('${member.name}')" class="p-2 rounded-lg text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800 transition-colors" title="Ver Detalle">
+              <button onclick="openDetailModalByName('${member.name}')" class="p-2 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors" title="Ver Detalle">
                 <i class="fa-solid fa-eye"></i>
               </button>
             </td>
@@ -1250,8 +1326,7 @@
       state.currentWeekId = newWeek.id;
       guardarDatosEnNavegador(); // Guardar automáticamente en localStorage
 
-      const now = new Date();
-      document.getElementById('lastUpdate').textContent = `${now.toLocaleDateString('es-ES')} ${now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`;
+      actualizarSelloSincronizacion();
 
       confetti();
       renderAll();
@@ -1296,9 +1371,9 @@
       showToast(`Archivo CSV de "${activeW.name}" generado con éxito.`);
     });
 
-    // Inicialización al cargar la página con persistencia local
-    window.addEventListener('DOMContentLoaded', () => {
-      cargarDatosDelNavegador();
+    // Inicialización al cargar la página con persistencia compartida en la nube
+    window.addEventListener('DOMContentLoaded', async () => {
+      await cargarDatosDelNavegador();
       renderAll();
     });
   </script>

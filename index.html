@@ -17,11 +17,11 @@
           },
           colors: {
             brand: {
-              50: '#f0f7ff',
-              100: '#e0effe',
-              500: '#3b82f6',
-              600: '#2563eb',
-              700: '#1d4ed8',
+              50: '#eef5f6',
+              100: '#dcebed',
+              500: '#458393',
+              600: '#3a6f7c',
+              700: '#305d68',
             }
           }
         }
@@ -82,26 +82,26 @@
       background: rgba(107, 114, 128, 0.8);
     }
 
-    /* Gradient Glowing Accents */
+    /* Subtle Accents (minimalista) */
     .glow-primary {
-      box-shadow: 0 0 20px -5px rgba(59, 130, 246, 0.3);
+      box-shadow: 0 0 14px -6px rgba(100, 116, 139, 0.18);
     }
     .glow-success {
-      box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.3);
+      box-shadow: 0 0 14px -6px rgba(100, 116, 139, 0.18);
     }
     .glow-warning {
-      box-shadow: 0 0 20px -5px rgba(245, 158, 11, 0.3);
+      box-shadow: 0 0 14px -6px rgba(100, 116, 139, 0.18);
     }
 
     /* Drag and Drop Hover */
     .drag-over {
-      border-color: #3b82f6 !important;
-      background-color: rgba(59, 130, 246, 0.08) !important;
+      border-color: #458393 !important;
+      background-color: rgba(69, 131, 147, 0.08) !important;
     }
   </style>
 </head>
 
-<body class="bg-slate-50 text-slate-900 min-h-screen antialiased selection:bg-blue-500 selection:text-white">
+<body class="bg-slate-50 text-slate-900 min-h-screen antialiased selection:bg-[#458393] selection:text-white">
 
   <!-- Main Container -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
@@ -109,7 +109,7 @@
     <!-- Header Section -->
     <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white border border-slate-200 p-5 rounded-2xl shadow-sm glass-card">
       <div class="flex items-center gap-4">
-        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
+        <div class="w-12 h-12 rounded-xl bg-[#458393] flex items-center justify-center text-white shadow-sm">
           <i class="fa-solid fa-chart-line text-xl"></i>
         </div>
         <div>
@@ -126,7 +126,7 @@
       <!-- Action Buttons -->
       <div class="flex items-center gap-3 self-end md:self-auto flex-wrap">
         <!-- Menú Consolidado: Actualizar Reporte / Opciones -->
-        <button id="openFeedModalBtn" class="flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white transition-all shadow-md shadow-blue-500/20 active:scale-95">
+        <button id="openFeedModalBtn" class="flex items-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-xl bg-[#458393] hover:bg-[#3a6f7c] text-white transition-all shadow-sm active:scale-95">
           <i class="fa-solid fa-sliders text-xs"></i>
           <span>Opciones de Reporte</span>
         </button>
@@ -145,12 +145,12 @@
       <div class="flex items-center gap-3">
         <div class="relative flex-1 sm:flex-none">
           <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-xs text-slate-400"></i>
-          <input id="searchInput" type="text" placeholder="Buscar integrante..." class="w-full sm:w-48 pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/40">
+          <input id="searchInput" type="text" placeholder="Buscar integrante..." class="w-full sm:w-48 pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-200 bg-slate-50 text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#458393]/40">
         </div>
 
         <!-- Period Selector Dropdown (Multi-week support) -->
         <div class="flex items-center gap-2 bg-slate-100 border border-slate-200 rounded-lg px-2.5 py-1.5 shadow-sm">
-          <i class="fa-regular fa-calendar-check text-blue-500 text-xs"></i>
+          <i class="fa-regular fa-calendar-check text-[#458393] text-xs"></i>
           <select id="weekSelector" onchange="changeWeek(this.value)" class="bg-transparent text-xs font-semibold text-slate-700 focus:outline-none cursor-pointer">
             <!-- Options populated dynamically by JS -->
           </select>
@@ -177,51 +177,51 @@
           <span class="text-xs text-slate-500 font-medium">elementos</span>
         </div>
         <div class="mt-3 flex items-center gap-1.5 text-xs text-slate-500">
-          <i class="fa-solid fa-database text-blue-500"></i>
+          <i class="fa-solid fa-database text-[#458393]"></i>
           <span>Capacidad total asignada</span>
         </div>
       </div>
 
       <!-- Completados Card -->
       <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm glass-card glow-success relative overflow-hidden group">
-        <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-110 transition-transform text-emerald-500">
+        <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-110 transition-transform text-[#34A99D]">
           <i class="fa-solid fa-circle-check text-8xl"></i>
         </div>
         <div class="flex items-center justify-between mb-3">
           <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Completados</span>
-          <span class="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+          <span class="p-2 rounded-xl bg-[#34A99D]/10 text-[#34A99D] border border-[#34A99D]/20">
             <i class="fa-solid fa-check text-sm"></i>
           </span>
         </div>
         <div class="flex items-baseline gap-2">
-          <span class="text-3xl font-extrabold tracking-tight text-emerald-600" id="kpi-completed">926</span>
-          <span id="kpi-completed-pct" class="inline-flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">
+          <span class="text-3xl font-extrabold tracking-tight text-[#34A99D]" id="kpi-completed">926</span>
+          <span id="kpi-completed-pct" class="inline-flex items-center text-xs font-bold text-[#34A99D] bg-[#34A99D]/10 px-1.5 py-0.5 rounded">
             <i class="fa-solid fa-arrow-trend-up mr-1 text-[10px]"></i>27.4%
           </span>
         </div>
         <div class="mt-3 flex items-center gap-1.5 text-xs text-slate-500">
-          <i class="fa-solid fa-bolt text-amber-500"></i>
+          <i class="fa-solid fa-bolt text-[#b8932e]"></i>
           <span>Procesados exitosamente</span>
         </div>
       </div>
 
       <!-- Pendientes Card -->
       <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm glass-card glow-warning relative overflow-hidden group">
-        <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-110 transition-transform text-amber-500">
+        <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-110 transition-transform text-[#F7DD7D]">
           <i class="fa-solid fa-clock text-8xl"></i>
         </div>
         <div class="flex items-center justify-between mb-3">
           <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Pendientes</span>
-          <span class="p-2 rounded-xl bg-amber-500/10 text-amber-600 border border-amber-500/20">
+          <span class="p-2 rounded-xl bg-[#F7DD7D]/10 text-[#b8932e] border border-[#F7DD7D]/20">
             <i class="fa-solid fa-hourglass-half text-sm"></i>
           </span>
         </div>
         <div class="flex items-baseline gap-2">
-          <span class="text-3xl font-extrabold tracking-tight text-amber-600" id="kpi-pending">2,450</span>
+          <span class="text-3xl font-extrabold tracking-tight text-[#b8932e]" id="kpi-pending">2,450</span>
           <span class="text-xs text-slate-500 font-medium">en cola</span>
         </div>
         <div class="mt-3 flex items-center gap-1.5 text-xs text-slate-500">
-          <i class="fa-solid fa-circle-notch text-amber-500 animate-spin"></i>
+          <i class="fa-solid fa-circle-notch text-[#b8932e] animate-spin"></i>
           <span>En proceso de atención</span>
         </div>
       </div>
@@ -230,18 +230,18 @@
       <div class="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm glass-card glow-primary relative overflow-hidden group">
         <div class="flex items-center justify-between mb-3">
           <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Tasa de Progreso</span>
-          <span class="p-2 rounded-xl bg-blue-500/10 text-blue-600 border border-blue-500/20">
+          <span class="p-2 rounded-xl bg-[#458393]/10 text-[#458393] border border-[#458393]/20">
             <i class="fa-solid fa-chart-pie text-sm"></i>
           </span>
         </div>
         <div class="flex items-baseline justify-between">
-          <span class="text-3xl font-extrabold tracking-tight text-blue-600" id="kpi-progress">27.4%</span>
+          <span class="text-3xl font-extrabold tracking-tight text-[#458393]" id="kpi-progress">27.4%</span>
           <span class="text-xs font-semibold text-slate-500">Meta: 100%</span>
         </div>
         <!-- Progress bar -->
         <div class="mt-3">
           <div class="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/50">
-            <div id="progress-bar" class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-700 ease-out" style="width: 27.4%;"></div>
+            <div id="progress-bar" class="h-full bg-[#458393] rounded-full transition-all duration-700 ease-out" style="width: 27.4%;"></div>
           </div>
           <div class="flex justify-between text-[11px] text-slate-400 mt-1">
             <span>0%</span>
@@ -261,7 +261,7 @@
         <div class="flex items-center justify-between mb-4">
           <div>
             <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-              <i class="fa-solid fa-chart-bar text-emerald-500"></i>
+              <i class="fa-solid fa-chart-bar text-[#34A99D]"></i>
               Avance por Equipo
             </h2>
             <p class="text-xs text-slate-500">Comparativa de completados vs pendientes</p>
@@ -277,12 +277,12 @@
         <div class="flex items-center justify-between mb-2">
           <div>
             <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-              <i class="fa-solid fa-chart-pie text-indigo-500"></i>
+              <i class="fa-solid fa-chart-pie text-[#458393]"></i>
               Distribución de Completados
             </h2>
             <p class="text-xs text-slate-500">Aportación relativa de elementos completados por integrante</p>
           </div>
-          <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-500/10 text-indigo-600 border border-indigo-500/20">
+          <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-[#458393]/10 text-[#458393] border border-[#458393]/20">
             Proporción Semanal
           </span>
         </div>
@@ -298,7 +298,7 @@
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
         <div>
           <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-            <i class="fa-solid fa-calendar-days text-indigo-500"></i>
+            <i class="fa-solid fa-calendar-days text-[#458393]"></i>
             Avance Diario por Gestor (Semana Actual)
           </h2>
           <p class="text-xs text-slate-500">Productividad diaria registrada de lunes a viernes</p>
@@ -317,14 +317,14 @@
       <div class="p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-            <i class="fa-solid fa-users text-indigo-500"></i>
+            <i class="fa-solid fa-users text-[#458393]"></i>
             Detalle por Integrante
           </h2>
           <p class="text-xs text-slate-500">Métricas desagregadas por analista asignado</p>
         </div>
         
         <div id="activeMembersBadge" class="flex items-center gap-2 text-xs text-slate-500 font-medium">
-          <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span> 3 Miembros Activos
+          <span class="inline-block w-2 h-2 rounded-full bg-[#34A99D]"></span> 3 Miembros Activos
         </div>
       </div>
 
@@ -350,8 +350,11 @@
     <!-- Footer -->
     <footer class="pt-4 pb-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 border-t border-slate-200 gap-2">
       <div class="flex items-center gap-2">
-        <i class="fa-solid fa-rotate text-blue-500"></i>
+        <i class="fa-solid fa-rotate text-[#458393]"></i>
         <span>Última actualización sincronizada: <strong id="lastUpdate" class="text-slate-600">--</strong></span>
+        <button id="refreshNowBtn" title="Actualizar ahora" class="text-slate-300 hover:text-[#458393] transition-colors">
+          <i class="fa-solid fa-arrows-rotate text-[11px]"></i>
+        </button>
       </div>
       <div>
         <span>Reporte Avance Semanal</span>
@@ -365,7 +368,7 @@
     <div class="bg-white border border-slate-200 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-200" id="feedModalContainer">
       <div class="p-5 border-b border-slate-200 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 font-bold flex items-center justify-center border border-blue-500/20">
+          <div class="w-10 h-10 rounded-xl bg-[#458393]/10 text-[#458393] font-bold flex items-center justify-center border border-[#458393]/20">
             <i class="fa-solid fa-sliders text-lg"></i>
           </div>
           <div>
@@ -382,16 +385,16 @@
         <!-- Local Upload Zone -->
         <div>
           <h4 class="text-sm font-semibold text-slate-800 mb-3 flex items-center gap-2">
-            <i class="fa-solid fa-file-excel text-emerald-500"></i> Cargar Archivo Local
+            <i class="fa-solid fa-file-excel text-[#34A99D]"></i> Cargar Archivo Local
           </h4>
-          <div id="dropZone" class="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-2xl p-6 flex flex-col items-center justify-center text-center bg-slate-50/50 transition-all cursor-pointer">
+          <div id="dropZone" class="border-2 border-dashed border-slate-300 hover:border-[#458393] rounded-2xl p-6 flex flex-col items-center justify-center text-center bg-slate-50/50 transition-all cursor-pointer">
             <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" class="hidden">
-            <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center mb-3 text-xl">
+            <div class="w-12 h-12 rounded-full bg-[#458393]/10 text-[#458393] flex items-center justify-center mb-3 text-xl">
               <i class="fa-solid fa-cloud-arrow-up"></i>
             </div>
             <p class="text-sm font-bold text-slate-800">Arrastra tu archivo Excel aquí</p>
-            <p class="text-xs text-slate-400 mt-1">Soporta <span class="font-mono text-emerald-500">.xlsx</span>, <span class="font-mono text-emerald-500">.xls</span>, <span class="font-mono text-emerald-500">.csv</span>.</p>
-            <button type="button" onclick="document.getElementById('excelFileInput').click()" class="mt-4 px-4 py-2 text-xs font-semibold rounded-xl bg-blue-600 hover:bg-blue-700 text-white transition-all shadow-md shadow-blue-500/20">
+            <p class="text-xs text-slate-400 mt-1">Soporta <span class="font-mono text-[#34A99D]">.xlsx</span>, <span class="font-mono text-[#34A99D]">.xls</span>, <span class="font-mono text-[#34A99D]">.csv</span>.</p>
+            <button type="button" onclick="document.getElementById('excelFileInput').click()" class="mt-4 px-4 py-2 text-xs font-semibold rounded-xl bg-[#458393] hover:bg-[#3a6f7c] text-white transition-all shadow-sm">
               Examinar archivo
             </button>
           </div>
@@ -400,25 +403,25 @@
         <!-- Extra Actions Grid -->
         <div>
           <h4 class="text-sm font-semibold text-slate-800 mb-3 flex items-center gap-2">
-            <i class="fa-solid fa-bolt text-amber-500"></i> Acciones Adicionales
+            <i class="fa-solid fa-bolt text-[#b8932e]"></i> Acciones Adicionales
           </h4>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             
             <!-- Sincronizar Nube -->
-            <button onclick="syncCloudDataAsNewWeek()" class="flex flex-col items-center justify-center p-3 gap-2 rounded-xl border border-slate-200 bg-white hover:bg-blue-50 text-slate-700 transition-all shadow-sm group">
-              <i class="fa-solid fa-cloud-arrow-down text-blue-500 text-xl group-hover:scale-110 transition-transform"></i>
+            <button onclick="syncCloudDataAsNewWeek()" class="flex flex-col items-center justify-center p-3 gap-2 rounded-xl border border-slate-200 bg-white hover:bg-[#458393]/10 text-slate-700 transition-all shadow-sm group">
+              <i class="fa-solid fa-cloud-arrow-down text-[#458393] text-xl group-hover:scale-110 transition-transform"></i>
               <span class="text-xs font-semibold text-center leading-tight">Sincronizar<br>Nube</span>
             </button>
             
             <!-- Exportar Data -->
-            <button id="exportCsvBtnModal" class="flex flex-col items-center justify-center p-3 gap-2 rounded-xl border border-slate-200 bg-white hover:bg-emerald-50 text-slate-700 transition-all shadow-sm group">
-              <i class="fa-solid fa-file-csv text-emerald-500 text-xl group-hover:scale-110 transition-transform"></i>
+            <button id="exportCsvBtnModal" class="flex flex-col items-center justify-center p-3 gap-2 rounded-xl border border-slate-200 bg-white hover:bg-[#34A99D]/10 text-slate-700 transition-all shadow-sm group">
+              <i class="fa-solid fa-file-csv text-[#34A99D] text-xl group-hover:scale-110 transition-transform"></i>
               <span class="text-xs font-semibold text-center leading-tight">Exportar<br>Data</span>
             </button>
 
             <!-- Limpiar Data -->
-            <button id="resetDataBtnModal" class="flex flex-col items-center justify-center p-3 gap-2 rounded-xl border border-slate-200 bg-white hover:bg-rose-50 hover:border-rose-200 text-slate-700 transition-all shadow-sm group">
-              <i class="fa-solid fa-rotate-left text-rose-500 text-xl group-hover:scale-110 transition-transform"></i>
+            <button id="resetDataBtnModal" class="flex flex-col items-center justify-center p-3 gap-2 rounded-xl border border-slate-200 bg-white hover:bg-[#FA5C5C]/10 hover:border-[#FA5C5C] text-slate-700 transition-all shadow-sm group">
+              <i class="fa-solid fa-rotate-left text-[#FA5C5C] text-xl group-hover:scale-110 transition-transform"></i>
               <span class="text-xs font-semibold text-center leading-tight">Limpiar<br>Data</span>
             </button>
 
@@ -439,7 +442,7 @@
     <div class="bg-white border border-slate-200 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-200" id="modalContainer">
       <div class="p-5 border-b border-slate-200 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div id="modalAvatar" class="w-10 h-10 rounded-full bg-blue-500/10 text-blue-600 font-bold flex items-center justify-center border border-blue-500/20">
+          <div id="modalAvatar" class="w-10 h-10 rounded-full bg-[#458393]/10 text-[#458393] font-bold flex items-center justify-center border border-[#458393]/20">
             --
           </div>
           <div>
@@ -455,17 +458,17 @@
       <div class="p-5 space-y-4">
         <!-- Key Stats Grid -->
         <div class="grid grid-cols-3 gap-3 text-center">
-          <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-            <p class="text-[11px] text-slate-400 uppercase font-semibold">Asignados</p>
-            <p id="modalAssigned" class="text-lg font-bold text-slate-900">0</p>
+          <div class="p-3 bg-[#458393]/10 rounded-xl border border-[#458393]/20">
+            <p class="text-[11px] text-[#458393] uppercase font-semibold">Asignados</p>
+            <p id="modalAssigned" class="text-lg font-bold text-[#458393]">0</p>
           </div>
-          <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-500/20">
-            <p class="text-[11px] text-emerald-600 uppercase font-semibold">Completados</p>
-            <p id="modalCompleted" class="text-lg font-bold text-emerald-600">0</p>
+          <div class="p-3 bg-[#34A99D]/10 rounded-xl border border-[#34A99D]/20">
+            <p class="text-[11px] text-[#34A99D] uppercase font-semibold">Completados</p>
+            <p id="modalCompleted" class="text-lg font-bold text-[#34A99D]">0</p>
           </div>
-          <div class="p-3 bg-amber-50 rounded-xl border border-amber-500/20">
-            <p class="text-[11px] text-amber-600 uppercase font-semibold">Pendientes</p>
-            <p id="modalPending" class="text-lg font-bold text-amber-600">0</p>
+          <div class="p-3 bg-[#F7DD7D]/20 rounded-xl border border-[#F7DD7D]/40">
+            <p class="text-[11px] text-[#b8932e] uppercase font-semibold">Pendientes</p>
+            <p id="modalPending" class="text-lg font-bold text-[#b8932e]">0</p>
           </div>
         </div>
 
@@ -493,7 +496,7 @@
   <div id="resetModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200 p-4">
     <div class="bg-white border border-slate-200 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-200" id="resetModalContainer">
       <div class="p-6 text-center space-y-4">
-        <div class="w-14 h-14 rounded-2xl bg-rose-500/10 text-rose-500 font-bold flex items-center justify-center mx-auto border border-rose-500/20">
+        <div class="w-14 h-14 rounded-2xl bg-[#FA5C5C]/10 text-[#FA5C5C] font-bold flex items-center justify-center mx-auto border border-[#FA5C5C]/20">
           <i class="fa-solid fa-arrow-rotate-left text-2xl"></i>
         </div>
         <div>
@@ -504,7 +507,7 @@
           <button onclick="closeResetModal()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors w-full">
             Cancelar
           </button>
-          <button onclick="confirmResetData()" class="px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold rounded-xl transition-all shadow-md shadow-rose-500/20 w-full">
+          <button onclick="confirmResetData()" class="px-4 py-2.5 bg-[#FA5C5C] hover:bg-[#e24a4a] text-white text-xs font-semibold rounded-xl transition-all shadow-sm w-full">
             Sí, Limpiar Data
           </button>
         </div>
@@ -516,14 +519,14 @@
   <script>
     // Color palette assigned dynamically to team members in charts
     const MEMBER_COLORS = [
-      '#3b82f6', // Blue
-      '#10b981', // Emerald
-      '#f59e0b', // Amber
-      '#8b5cf6', // Purple
-      '#ec4899', // Pink
-      '#06b6d4', // Cyan
-      '#f97316', // Orange
-      '#6366f1'  // Indigo
+      '#458393', // Azul
+      '#34A99D', // Verde
+      '#F7DD7D', // Amarillo
+      '#FA5C5C', // Rojo
+      '#305d68', // Azul oscuro (variante)
+      '#227a70', // Verde oscuro (variante)
+      '#dcb94a', // Amarillo oscuro (variante)
+      '#c94444'  // Rojo oscuro (variante)
     ];
 
     // Multi-Week Global State
@@ -720,10 +723,10 @@
       const toast = document.createElement('div');
       
       const icon = type === 'success' 
-        ? '<i class="fa-solid fa-circle-check text-emerald-500 text-base"></i>' 
+        ? '<i class="fa-solid fa-circle-check text-[#34A99D] text-base"></i>' 
         : type === 'error'
-        ? '<i class="fa-solid fa-circle-exclamation text-rose-500 text-base"></i>'
-        : '<i class="fa-solid fa-circle-info text-blue-500 text-base"></i>';
+        ? '<i class="fa-solid fa-circle-exclamation text-[#FA5C5C] text-base"></i>'
+        : '<i class="fa-solid fa-circle-info text-[#458393] text-base"></i>';
 
       toast.className = 'pointer-events-auto flex items-center gap-2.5 px-4 py-3 bg-white border border-slate-200 rounded-xl shadow-xl text-xs font-semibold text-slate-800 transform translate-y-4 opacity-0 transition-all duration-300';
       toast.innerHTML = `${icon} <span>${message}</span>`;
@@ -783,7 +786,7 @@
       document.getElementById('kpi-completed-pct').innerHTML = `<i class="fa-solid fa-arrow-trend-up mr-1 text-[10px]"></i>${pct}%`;
       document.getElementById('progress-bar').style.width = `${pct}%`;
 
-      document.getElementById('activeMembersBadge').innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span> ${activeTeam.length} Miembros Activos`;
+      document.getElementById('activeMembersBadge').innerHTML = `<span class="inline-block w-2 h-2 rounded-full bg-[#34A99D]"></span> ${activeTeam.length} Miembros Activos`;
     }
 
     function getChartThemeColors() {
@@ -867,13 +870,13 @@
             {
               label: 'Completados',
               data: filteredTeam.map(m => m.completed),
-              backgroundColor: '#10b981',
+              backgroundColor: '#34A99D',
               borderRadius: 6
             },
             {
               label: 'Pendientes',
               data: filteredTeam.map(m => m.pending),
-              backgroundColor: '#f59e0b',
+              backgroundColor: '#F7DD7D',
               borderRadius: 6
             }
           ]
@@ -967,7 +970,7 @@
 
       let html = `
         <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mr-2 hidden sm:inline">Filtrar:</span>
-        <button data-filter="all" onclick="setFilter('all')" class="team-filter-btn px-3 py-1.5 text-xs font-medium rounded-lg ${state.currentFilter === 'all' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'} transition-all">
+        <button data-filter="all" onclick="setFilter('all')" class="team-filter-btn px-3 py-1.5 text-xs font-medium rounded-lg ${state.currentFilter === 'all' ? 'bg-[#458393] text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'} transition-all">
           Todos los miembros
         </button>
       `;
@@ -975,7 +978,7 @@
       activeTeam.forEach(m => {
         const active = state.currentFilter.toLowerCase() === m.name.toLowerCase();
         html += `
-          <button data-filter="${m.name}" onclick="setFilter('${m.name}')" class="team-filter-btn px-3 py-1.5 text-xs font-medium rounded-lg ${active ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'} transition-all">
+          <button data-filter="${m.name}" onclick="setFilter('${m.name}')" class="team-filter-btn px-3 py-1.5 text-xs font-medium rounded-lg ${active ? 'bg-[#458393] text-white shadow-sm' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'} transition-all">
             ${m.name}
           </button>
         `;
@@ -1027,7 +1030,7 @@
           <tr class="team-row hover:bg-slate-50/60 transition-colors" data-name="${member.name}">
             <td class="py-4 px-4 sm:px-6">
               <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full bg-blue-500/10 text-blue-600 font-bold flex items-center justify-center border border-blue-500/20">
+                <div class="w-9 h-9 rounded-full bg-[#458393]/10 text-[#458393] font-bold flex items-center justify-center border border-[#458393]/20">
                   ${initials}
                 </div>
                 <div>
@@ -1037,21 +1040,21 @@
             </td>
             <td class="py-4 px-4 text-center text-slate-900 font-semibold">${assigned.toLocaleString()}</td>
             <td class="py-4 px-4 text-center">
-              <span class="inline-flex items-center gap-1 font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+              <span class="inline-flex items-center gap-1 font-bold text-[#34A99D] bg-[#34A99D]/10 px-2 py-0.5 rounded-full border border-[#34A99D]/20">
                 <i class="fa-solid fa-circle-check text-[10px]"></i> ${completed.toLocaleString()}
               </span>
             </td>
-            <td class="py-4 px-4 text-center text-amber-600 font-semibold">${pending.toLocaleString()}</td>
+            <td class="py-4 px-4 text-center text-[#b8932e] font-semibold">${pending.toLocaleString()}</td>
             <td class="py-4 px-4 text-center">
               <div class="flex items-center justify-center gap-3">
                 <div class="w-28 h-2 bg-slate-100 rounded-full overflow-hidden">
-                  <div class="h-full bg-emerald-500 rounded-full" style="width: ${pct}%;"></div>
+                  <div class="h-full bg-[#34A99D] rounded-full" style="width: ${pct}%;"></div>
                 </div>
                 <span class="font-bold text-xs text-slate-900">${pct}%</span>
               </div>
             </td>
             <td class="py-4 px-4 text-right pr-6">
-              <button onclick="openDetailModalByName('${member.name}')" class="p-2 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors" title="Ver Detalle">
+              <button onclick="openDetailModalByName('${member.name}')" class="p-2 rounded-lg text-slate-400 hover:text-[#458393] hover:bg-[#458393]/10 transition-colors" title="Ver Detalle">
                 <i class="fa-solid fa-eye"></i>
               </button>
             </td>
@@ -1376,6 +1379,23 @@
       await cargarDatosDelNavegador();
       renderAll();
     });
+
+    // Botón discreto de actualización manual (junto al sello de sincronización)
+    document.getElementById('refreshNowBtn').addEventListener('click', async (e) => {
+      const icon = e.currentTarget.querySelector('i');
+      icon.classList.add('fa-spin');
+      await cargarDatosDelNavegador();
+      renderAll();
+      icon.classList.remove('fa-spin');
+      showToast('Datos actualizados desde la nube.', 'info');
+    });
+
+    // Auto-refresh: revisa la nube automáticamente cada 2 horas, sin recargar la página
+    const AUTO_REFRESH_MS = 2 * 60 * 60 * 1000; // 2 horas
+    setInterval(async () => {
+      await cargarDatosDelNavegador();
+      renderAll();
+    }, AUTO_REFRESH_MS);
   </script>
 </body>
 </html>

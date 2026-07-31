@@ -1091,11 +1091,29 @@
         }
       }
 
+      // Buscar dentro de las primeras filas/celdas del propio Sheet una indicación
+      // explícita de la semana, ej: una celda con el texto "Semana: 2" o "Semana 2".
+      if (!weekNum && Array.isArray(jsonData)) {
+        for (let i = 0; i < Math.min(jsonData.length, 10); i++) {
+          const row = jsonData[i];
+          if (!Array.isArray(row)) continue;
+          for (const cell of row) {
+            if (cell === null || cell === undefined) continue;
+            const cellMatch = String(cell).match(/semana[_\s:\-]*(\d+)/i);
+            if (cellMatch && cellMatch[1]) {
+              weekNum = parseInt(cellMatch[1]);
+              break;
+            }
+          }
+          if (weekNum) break;
+        }
+      }
+
       const nextWeekIndex = state.weeks.length + 1;
       const actualNum = weekNum || nextWeekIndex;
 
       const startDate = new Date(2026, 6, 20);
-      startDate.setDate(startDate.getDate() + (nextWeekIndex - 1) * 7);
+      startDate.setDate(startDate.getDate() + (actualNum - 1) * 7);
       const endDate = new Date(startDate);
       endDate.setDate(endDate.getDate() + 4);
 
@@ -1105,6 +1123,7 @@
 
       return {
         id: `week_${Date.now()}`,
+        weekNum: actualNum,
         name: `Semana ${actualNum} (${dateRangeShort})`,
         dateStr: dateRangeFull
       };
@@ -1318,22 +1337,43 @@
       }
 
       const weekDetails = detectWeekNameFromFile(filename, workbook, rows);
-      const newWeek = {
-        id: weekDetails.id,
-        name: weekDetails.name,
-        dateStr: weekDetails.dateStr,
-        team: parsedTeam
-      };
 
-      state.weeks.push(newWeek);
-      state.currentWeekId = newWeek.id;
+      // Buscar si ya existe una semana con ese mismo número (ej: "Semana 2 (...)")
+      const existingIdx = state.weeks.findIndex(w => {
+        const m = w.name.match(/semana\s*(\d+)/i);
+        return m && parseInt(m[1]) === weekDetails.weekNum;
+      });
+
+      let targetWeekId;
+      let isUpdate = false;
+
+      if (existingIdx !== -1) {
+        // Ya existe esa semana: actualizamos sus datos en lugar de duplicarla
+        state.weeks[existingIdx].team = parsedTeam;
+        state.weeks[existingIdx].name = weekDetails.name;
+        state.weeks[existingIdx].dateStr = weekDetails.dateStr;
+        targetWeekId = state.weeks[existingIdx].id;
+        isUpdate = true;
+      } else {
+        // Semana nueva: la creamos
+        const newWeek = {
+          id: weekDetails.id,
+          name: weekDetails.name,
+          dateStr: weekDetails.dateStr,
+          team: parsedTeam
+        };
+        state.weeks.push(newWeek);
+        targetWeekId = newWeek.id;
+      }
+
+      state.currentWeekId = targetWeekId;
       guardarDatosEnNavegador(); // Guardar automáticamente en localStorage
 
       actualizarSelloSincronizacion();
 
       confetti();
       renderAll();
-      showToast('Archivo importado con éxito.', 'success');
+      showToast(isUpdate ? `${weekDetails.name} actualizada con éxito.` : 'Nueva semana creada con éxito.', 'success');
       closeFeedModal();
     }
 

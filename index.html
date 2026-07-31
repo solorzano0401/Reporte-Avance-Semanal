@@ -560,6 +560,30 @@
 
     // --- Persistencia compartida en la nube (Google Sheets vía Apps Script) ---
     const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbwCWr5Sbc2RV8pd0fgh37x4FCsp35DgjTdtVyZCE0VnrmN1OvzV6jVEkNDCmaSce7YaDQ/exec";
+    const ADMIN_TOKEN_KEY = 'dashboard_admin_token';
+
+    function getAdminToken() {
+      return localStorage.getItem(ADMIN_TOKEN_KEY);
+    }
+
+    function clearAdminToken() {
+      localStorage.removeItem(ADMIN_TOKEN_KEY);
+    }
+
+    // Pide la contraseña de administrador si aún no se ha guardado en este navegador.
+    // Devuelve true si hay (o se acaba de ingresar) una contraseña para intentar la acción.
+    function ensureAdminAccess(actionLabel) {
+      let token = getAdminToken();
+      if (token) return true;
+
+      token = prompt(`Esta acción (${actionLabel}) requiere la contraseña de administrador:`);
+      if (!token) {
+        showToast('Acción cancelada: se requiere contraseña de administrador.', 'error');
+        return false;
+      }
+      localStorage.setItem(ADMIN_TOKEN_KEY, token);
+      return true;
+    }
 
     // Guarda el estado tanto localmente (respaldo offline) como en la nube (compartido)
     function guardarDatosEnNavegador() {
@@ -568,12 +592,27 @@
     }
 
     async function guardarDatosEnLaNube() {
+      const token = getAdminToken();
+      if (!token) return; // Sin contraseña de administrador: no se intenta escribir en la nube
+
       try {
-        await fetch(SHEETS_API_URL, {
+        const response = await fetch(SHEETS_API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // evita preflight CORS
-          body: JSON.stringify(state)
+          body: JSON.stringify({ token, data: state })
         });
+        const result = await response.json();
+
+        if (result.status === 'error') {
+          if (result.message && result.message.toLowerCase().includes('no autorizado')) {
+            clearAdminToken();
+            showToast('Contraseña de administrador incorrecta. Tus cambios NO se guardaron en la nube compartida.', 'error');
+          } else {
+            showToast('No se pudo guardar en la nube: ' + result.message, 'error');
+          }
+          return;
+        }
+
         actualizarSelloSincronizacion();
       } catch (e) {
         console.error("Error al guardar en la nube:", e);
@@ -638,6 +677,7 @@
     }
 
     function confirmResetData() {
+      if (!ensureAdminAccess('Restablecer datos')) return;
       state = JSON.parse(JSON.stringify(INITIAL_STATE));
       guardarDatosEnNavegador(); // Guardar el reseteo en localStorage
       document.getElementById('searchInput').value = '';
@@ -1131,6 +1171,7 @@
 
     // --- Sincronización Automática desde Google Sheets / Nube ---
     async function syncCloudDataAsNewWeek() {
+      if (!ensureAdminAccess('Sincronizar Nube')) return;
       closeFeedModal(); // Cerrar modal de opciones primero
       
       const defaultUrl = "https://docs.google.com/spreadsheets/d/TU_ID_DE_HOJA/export?format=csv";
@@ -1206,12 +1247,14 @@
     });
 
     dropZone.addEventListener('drop', (e) => {
+      if (!ensureAdminAccess('Actualizar Reporte')) return;
       const dt = e.dataTransfer;
       const files = dt.files;
       if (files.length > 0) processExcelFile(files[0]);
     });
 
     excelFileInput.addEventListener('change', (e) => {
+      if (!ensureAdminAccess('Actualizar Reporte')) return;
       if (e.target.files.length > 0) {
         processExcelFile(e.target.files[0]);
       }

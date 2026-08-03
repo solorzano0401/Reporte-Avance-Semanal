@@ -650,6 +650,15 @@
       }
     }
 
+    // Fuerza que, al cargar los datos (desde la nube o desde el respaldo local),
+    // siempre se muestre por defecto la semana más reciente del historial —
+    // sin importar qué semana haya quedado guardada de una sesión anterior.
+    function forzarSemanaMasReciente() {
+      if (state.weeks && state.weeks.length > 0) {
+        state.currentWeekId = state.weeks[state.weeks.length - 1].id;
+      }
+    }
+
     // Carga el estado desde la nube; si falla, usa el respaldo local
     async function cargarDatosDelNavegador() {
       try {
@@ -660,6 +669,7 @@
           const parsedState = JSON.parse(text);
           if (parsedState && parsedState.weeks) {
             state = parsedState;
+            forzarSemanaMasReciente();
             localStorage.setItem('dashboard_state_mac', JSON.stringify(state)); // sincroniza respaldo local
             actualizarSelloSincronizacion();
             return;
@@ -679,6 +689,7 @@
           const parsedState = JSON.parse(datosGuardados);
           if (parsedState && parsedState.weeks) {
             state = parsedState;
+            forzarSemanaMasReciente();
           }
         } catch (e) {
           console.error("Error al cargar datos de localStorage:", e);
@@ -836,8 +847,11 @@
     }
 
     function changeWeek(weekId) {
+      // Cambiar de semana en el selector es solo una vista local y temporal:
+      // NO se guarda en la nube ni en localStorage, para que nunca sobreescriba
+      // qué semana ven los demás usuarios, y para que al recargar la página
+      // siempre se vuelva a mostrar la semana más reciente por defecto.
       state.currentWeekId = weekId;
-      guardarDatosEnNavegador(); // Guardar selección de semana activa
       renderAll();
       showToast(`Mostrando datos de: ${getActiveWeek().name}`, 'info');
     }
@@ -1517,7 +1531,6 @@
             const name = String(row[nameCol]).trim();
             if (!name || name.toLowerCase().includes('total') || name.toLowerCase().includes('promedio')) continue;
 
-            // Validar que asignados/completados/pendientes sean números válidos y no negativos
             const rawAssigned = assignedCol !== -1 ? row[assignedCol] : null;
             const rawCompleted = completedCol !== -1 ? row[completedCol] : null;
 
@@ -1603,7 +1616,6 @@
 
       const weekDetails = detectWeekNameFromFile(filename, workbook, rows);
 
-      // Buscar si ya existe una semana con ese mismo número (ej: "Semana 2 (...)")
       const existingIdx = state.weeks.findIndex(w => {
         const m = w.name.match(/semana\s*(\d+)/i);
         return m && parseInt(m[1]) === weekDetails.weekNum;
@@ -1613,7 +1625,6 @@
       let isUpdate = false;
 
       if (existingIdx !== -1) {
-        // Ya existe esa semana: actualizamos sus datos en lugar de duplicarla
         state.weeks[existingIdx].team = parsedTeam;
         state.weeks[existingIdx].name = weekDetails.name;
         state.weeks[existingIdx].dateStr = weekDetails.dateStr;
@@ -1656,7 +1667,6 @@
       if (e.target === document.getElementById('detailModal')) closeDetailModal();
     });
 
-    // Exporta el reporte completo (KPIs, gráficas y tabla) a un PDF listo para compartir
     async function exportPdfReport() {
       closeFeedModal();
       showToast('Generando PDF, esto puede tardar unos segundos...', 'info');
@@ -1665,7 +1675,6 @@
         const activeW = getActiveWeek();
         const target = document.getElementById('pdfExportArea');
 
-        // Espera a que se cierre el modal de opciones antes de capturar
         await new Promise(resolve => setTimeout(resolve, 300));
 
         const canvas = await html2canvas(target, {
@@ -1705,7 +1714,7 @@
     }
 
     document.getElementById('exportCsvBtnModal').addEventListener('click', () => {
-      closeFeedModal(); // Cerramos el menú
+      closeFeedModal(); 
       const activeW = getActiveWeek();
       let csv = `Reporte: ${activeW.name}\n`;
       csv += 'Integrante,Asignados,Completados,Pendientes,Progreso (%),Lunes,Martes,Miércoles,Jueves,Viernes\n';
